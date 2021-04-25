@@ -1,14 +1,16 @@
 package ru.admin.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import ru.admin.dto.UserRequestDto;
 import ru.admin.dto.UserResponseDto;
 import ru.admin.service.UserService;
 import ru.admin.utils.ControllerUtils;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("users")
@@ -16,7 +18,8 @@ public class UserController {
 
     private final UserService userService;
 
-    private UserController(UserService userService) {
+    @Autowired
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -29,4 +32,10 @@ public class UserController {
     private Mono<ResponseEntity<UserResponseDto>> getWithEmail(@RequestParam String email) {
         return ControllerUtils.wrapByResponseEntity(userService.getWithEmail(email));
     }
+
+    @PostMapping
+    public Mono<UserResponseDto> create(@RequestBody @Valid Mono<UserRequestDto> user) {
+        return userService.create(user);
+    }
+
 }

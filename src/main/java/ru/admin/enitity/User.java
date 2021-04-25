@@ -16,7 +16,7 @@ public class User implements UserDetails {
     private Long id;
     private String email;
     private String password;
-    private UserRole role;
+    private UserRole role = UserRole.USER;
     private UserStatus status;
 
     @Override
