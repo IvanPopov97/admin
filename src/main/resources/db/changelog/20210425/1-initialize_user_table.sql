@@ -23,3 +23,4 @@ create unique index if not exists users_email_index
 
 comment on table users is 'Таблица пользователей';
 
+insert into users (email, password, role, status) values ('golden.royal@mail.ru', '{none}31165119221', 'ADMIN', 'ACTIVE')
