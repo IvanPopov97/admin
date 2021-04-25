@@ -1,0 +1,9 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: development
+  datasource:
+    schema: public
+  webflux:
+    base-path: /api

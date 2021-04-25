@@ -1,0 +1,16 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/admin
+    username: admin
+    password: xPFe5CxBDtsqTYg
+  liquibase:
+    url: jdbc:postgresql://localhost:5432/admin
+    user: admin
+    password: xPFe5CxBDtsqTYg
+    change-log: db/changelog/changelog-master.xml
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: DEBUG
+
