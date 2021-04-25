@@ -16,3 +16,6 @@ spring:
     change-log: db/changelog/changelog-master.xml
   webflux:
     base-path: /api
+springdoc:
+  swagger-ui:
+    path: /doc

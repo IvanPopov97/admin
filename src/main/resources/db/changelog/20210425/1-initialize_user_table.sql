@@ -1,12 +1,6 @@
 --liquibase formatted sql
 
 --changeset popov:20210425-1
-create type user_role as enum ('USER', 'ADMIN');
-
---changeset popov:20210425-2
-create type user_status as enum ('NOT_ACTIVE', 'ACTIVE', 'BLOCKED');
-
---changeset popov:20210425-3
 create table if not exists users
 (
 	id bigserial
@@ -14,8 +8,8 @@ create table if not exists users
 			primary key,
 	email text not null,
 	password text not null,
-	role user_role default 'USER',
-	status user_status default 'NOT_ACTIVE'
+	role text default 'USER',
+	status text default 'NOT_ACTIVE'
 );
 
 create unique index if not exists users_email_index
@@ -23,4 +17,4 @@ create unique index if not exists users_email_index
 
 comment on table users is 'Таблица пользователей';
 
-insert into users (email, password, role, status) values ('golden.royal@mail.ru', '{none}31165119221', 'ADMIN', 'ACTIVE')
+insert into users (email, password, role, status) values ('golden.royal@mail.ru', '{noop}31165119221', 'ADMIN', 'ACTIVE')
