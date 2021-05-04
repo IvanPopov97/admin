@@ -21,12 +21,11 @@ springdoc:
     path: /doc
 password:
   validation:
-    length:
-      min: 8
-      max: 50
+    min-length: 8
+    max-length: 50
     min-count:
       uppercase: 1
       lowercase: 1
       digit: 1
-      special: 1
-    simple-sequence-limit: 5
+      special: 0
+    simple-sequence-limit: 4

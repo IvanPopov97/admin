@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface Password {
 
-    String message() default "пароль слишком простой и не удовлетворяет бизнес-правилам";
+    String message() default "пароль слишком простой или не удовлетворяет бизнес-правилам";
 
     Class<?>[] groups() default {};
 

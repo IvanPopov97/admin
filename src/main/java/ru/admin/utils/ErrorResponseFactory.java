@@ -10,7 +10,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
 
 public class ErrorResponseFactory {
-    public static ErrorResponse createFrom(WebExchangeBindException exception) {
+    public static ErrorResponse from(WebExchangeBindException exception) {
         ErrorResponse response = new ErrorResponse();
         response.setParam("body");
         response.setMessage("не все поля прошли проверку");
@@ -24,7 +24,7 @@ public class ErrorResponseFactory {
         return response;
     }
 
-    public static ErrorResponse createFrom(ConstraintViolationException exception) {
+    public static ErrorResponse from(ConstraintViolationException exception) {
         ConstraintViolation<?> constraintViolation = (ConstraintViolation<?>) exception.getConstraintViolations().toArray()[0];
         ErrorResponse response = new ErrorResponse();
         response.setParam(((PathImpl) constraintViolation.getPropertyPath()).getLeafNode().getName());

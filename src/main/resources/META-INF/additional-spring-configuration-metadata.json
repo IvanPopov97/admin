@@ -2,37 +2,44 @@
   "properties": [
     {
       "name": "password.validation.simple-sequence-limit",
-      "type": "java.lang.String",
-      "description": "Description for password.validation.simple-sequence-limit."
+      "type": "java.lang.Integer",
+      "description": "Максимальная допустимая длина простых последовательностей в пароле таких как 012345, abc, qwerty и 11111.",
+      "defaultValue": 0
     },
     {
       "name": "password.validation.min-count.special",
-      "type": "java.lang.String",
-      "description": "Description for password.validation.min-count.special."
-    },
-    {
-      "name": "password.validation.length.min",
-      "type": "java.lang.String",
-      "description": "Description for password.validation.length.min."
-    },
-    {
-      "name": "password.validation.length.max",
-      "type": "java.lang.String",
-      "description": "Description for password.validation.length.max."
+      "type": "java.lang.Integer",
+      "description": "Минимальное количество специальных символов в пароле.",
+      "defaultValue": 0
     },
     {
       "name": "password.validation.min-count.uppercase",
-      "type": "java.lang.String",
-      "description": "Description for password.validation.min-count.uppercase."
+      "type": "java.lang.Integer",
+      "description": "Минимальное количество символов в верхнем регистре в пароле.",
+      "defaultValue": 0
     },
     {
       "name": "password.validation.min-count.lowercase",
-      "type": "java.lang.String",
-      "description": "Description for password.validation.min-count.lowercase."
+      "type": "java.lang.Integer",
+      "description": "Минимальное количество символов в нижнем регистре в пароле.",
+      "defaultValue": 0
     },
     {
       "name": "password.validation.min-count.digit",
-      "type": "java.lang.String",
-      "description": "Description for password.validation.min-count.digit."
+      "type": "java.lang.Integer",
+      "description": "Минимальное количество цифр в пароле.",
+      "defaultValue": 0
+    },
+    {
+      "name": "password.validation.min-length",
+      "type": "java.lang.Integer",
+      "description": "Минимальная длина пароля.",
+      "defaultValue": 8
+    },
+    {
+      "name": "password.validation.max-length",
+      "type": "java.lang.Integer",
+      "description": "Максимальная длина пароля.",
+      "defaultValue": 50
     }
   ] }

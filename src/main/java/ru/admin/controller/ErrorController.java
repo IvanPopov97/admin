@@ -21,14 +21,14 @@ public class ErrorController {
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public Mono<ErrorResponse> handleBodyValidationError(WebExchangeBindException exception) {
         log.error("Ошибки в Request Body", exception);
-        return Mono.just(exception).map(ErrorResponseFactory::createFrom);
+        return Mono.just(exception).map(ErrorResponseFactory::from);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public Mono<ErrorResponse> handleValidationError(ConstraintViolationException exception) {
         log.error("Ошибка в контроллере", exception);
-        return Mono.just(exception).map(ErrorResponseFactory::createFrom);
+        return Mono.just(exception).map(ErrorResponseFactory::from);
     }
 
     @ExceptionHandler
