@@ -1,0 +1,38 @@
+{
+  "properties": [
+    {
+      "name": "password.validation.simple-sequence-limit",
+      "type": "java.lang.String",
+      "description": "Description for password.validation.simple-sequence-limit."
+    },
+    {
+      "name": "password.validation.min-count.special",
+      "type": "java.lang.String",
+      "description": "Description for password.validation.min-count.special."
+    },
+    {
+      "name": "password.validation.length.min",
+      "type": "java.lang.String",
+      "description": "Description for password.validation.length.min."
+    },
+    {
+      "name": "password.validation.length.max",
+      "type": "java.lang.String",
+      "description": "Description for password.validation.length.max."
+    },
+    {
+      "name": "password.validation.min-count.uppercase",
+      "type": "java.lang.String",
+      "description": "Description for password.validation.min-count.uppercase."
+    },
+    {
+      "name": "password.validation.min-count.lowercase",
+      "type": "java.lang.String",
+      "description": "Description for password.validation.min-count.lowercase."
+    },
+    {
+      "name": "password.validation.min-count.digit",
+      "type": "java.lang.String",
+      "description": "Description for password.validation.min-count.digit."
+    }
+  ] }

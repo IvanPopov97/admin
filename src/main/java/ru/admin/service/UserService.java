@@ -37,7 +37,7 @@ public class UserService {
         return userDto
                 .map(UserRequestDto::withoutId)
                 .map(this::encodePassword)
-                .publishOn(Schedulers.parallel())
+                .subscribeOn(Schedulers.boundedElastic())
                 .map(dto -> BaseMapper.map(dto, User.class))
                 .flatMap(userRepository::save)
                 .map(user -> BaseMapper.map(user, UserResponseDto.class));

@@ -1,15 +1,19 @@
 package ru.admin.dto;
 
 import lombok.Data;
+import ru.admin.validation.annotation.Password;
 
 import javax.validation.constraints.Email;
 
 @Data
 public class UserRequestDto {
     private Long id;
-    //@Email(message = "Почта указана неверно")
     @Email
     private String email;
+    //@Min(value = 8)
+    //@Max(value = 50)
+    //@NotBlank
+    @Password
     private String password;
 
     public UserRequestDto withoutId() {
