@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeExchange()
                 .pathMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .pathMatchers("/doc", "/actuator").hasRole("ADMIN")
                 .anyExchange().authenticated()
                 .and()
                 .httpBasic()
