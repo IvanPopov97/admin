@@ -1,5 +1,6 @@
 package ru.admin.config;
 
+import io.r2dbc.proxy.listener.ProxyExecutionListener;
 import org.passay.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -28,7 +29,6 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeExchange()
                 .pathMatchers("/", "index", "/css/*", "/js/*").permitAll()
-                .pathMatchers("/doc", "/actuator").hasRole("ADMIN")
                 .anyExchange().authenticated()
                 .and()
                 .httpBasic()

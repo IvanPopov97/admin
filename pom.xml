@@ -17,6 +17,7 @@
 		<java.version>11</java.version>
 		<springdoc.version>1.5.2</springdoc.version>
 		<passay.version>1.6.0</passay.version>
+		<r2dbc.proxy.version>0.8.5.RELEASE</r2dbc.proxy.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -77,6 +78,11 @@
 			<groupId>io.r2dbc</groupId>
 			<artifactId>r2dbc-postgresql</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.r2dbc</groupId>
+			<artifactId>r2dbc-proxy</artifactId>
+			<version>${r2dbc.proxy.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>

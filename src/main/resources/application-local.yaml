@@ -1,6 +1,12 @@
-logging:
-  level:
-    org:
-      springframework:
-        r2dbc: DEBUG
-
+spring:
+  application:
+    name: development
+  datasource:
+    schema: public
+  r2dbc:
+    url: r2dbc:proxy:postgresql://localhost:5432/admin?proxyListener=ru.admin.config.SqlLogger
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        r2dbc: DEBUG
