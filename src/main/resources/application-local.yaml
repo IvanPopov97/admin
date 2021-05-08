@@ -3,10 +3,21 @@ spring:
     name: development
   datasource:
     schema: public
+  # логирование sql запросов вместе с параметрами
   r2dbc:
     url: r2dbc:proxy:postgresql://localhost:5432/admin?proxyListener=ru.admin.config.SqlLogger
-#logging:
-#  level:
-#    org:
-#      springframework:
-#        r2dbc: DEBUG
+management:
+  endpoint:
+    health:
+      # показывать подробные данные о состоянии приложения
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: auditevents,beans,caches,conditions,configprops,env,flyway,health,heapdump,httptrace,info,logfile,loggers,metrics,mappings,shutdown,threaddump
+blocking-call-detection:
+  enable: true
+logging:
+  level:
+    web: DEBUG
+    ru.admin.config: DEBUG

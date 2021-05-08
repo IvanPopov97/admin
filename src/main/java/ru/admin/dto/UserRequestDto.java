@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 @Data
 public class UserRequestDto {
     private Long id;
-    @Email
+    @Email(message = "это не похоже на реальный адрес электронной почты")
     private String email;
     //@Min(value = 8)
     //@Max(value = 50)

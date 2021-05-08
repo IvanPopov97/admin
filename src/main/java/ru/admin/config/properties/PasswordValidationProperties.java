@@ -1,8 +1,9 @@
-package ru.admin.config;
+package ru.admin.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import ru.admin.config.properties.MinCountProperties;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -16,7 +17,7 @@ public class PasswordValidationProperties {
     private int minLength;
     @Min(value = 2)
     private int maxLength;
-    private MinCount minCount;
+    private MinCountProperties minCount;
     @Min(value = 0)
     private int simpleSequenceLimit;
 }

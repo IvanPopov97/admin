@@ -6,6 +6,7 @@ import io.r2dbc.proxy.support.QueryExecutionInfoFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 
+@SuppressWarnings("unused")
 @Slf4j
 public class SqlLogger implements ProxyExecutionListener {
     private final QueryExecutionInfoFormatter formatter = new QueryExecutionInfoFormatter()

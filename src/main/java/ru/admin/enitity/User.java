@@ -36,7 +36,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return status != UserStatus.BLOCKED;
+        return status != UserStatus.LOCKED;
     }
 
     @Override

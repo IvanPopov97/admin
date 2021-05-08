@@ -14,6 +14,7 @@ class AdminApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// BlockHound.install();
 	}
 
 	@Test

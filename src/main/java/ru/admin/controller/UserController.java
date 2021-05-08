@@ -1,5 +1,6 @@
 package ru.admin.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +24,19 @@ public class UserController {
     }
 
     @GetMapping("exists")
+    @Operation(summary = "Проверить, существует ли пользователь с данной электронной почтой")
     private Mono<Boolean> exists(@RequestParam String email) {
         return userService.existsByEmail(email);
     }
 
     @GetMapping
+    @Operation(summary = "Получить данные пользователя с указанной электронной почтой")
     private Mono<ResponseEntity<UserResponseDto>> getWithEmail(@RequestParam String email) {
         return ControllerUtils.wrapByResponseEntity(userService.getWithEmail(email));
     }
 
     @PostMapping
+    @Operation(summary = "Добавить пользователя")
     public Mono<UserResponseDto> create(@RequestBody @Valid Mono<UserRequestDto> user) {
         return userService.create(user);
     }

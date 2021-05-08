@@ -1,4 +1,4 @@
-package ru.admin.config;
+package ru.admin.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.Min;
 @Getter
 @Setter
 @Valid
-public class MinCount {
+public class MinCountProperties {
     @Min(value = 0)
     private int upperCase;
     @Min(value = 0)

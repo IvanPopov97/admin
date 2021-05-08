@@ -8,6 +8,7 @@ import reactor.core.scheduler.Schedulers;
 import ru.admin.dto.UserRequestDto;
 import ru.admin.dto.UserResponseDto;
 import ru.admin.enitity.User;
+import ru.admin.error.UserWithSameEmailAlreadyExists;
 import ru.admin.repository.UserRepository;
 import ru.admin.utils.BaseMapper;
 
@@ -35,10 +36,9 @@ public class UserService {
 
     public Mono<UserResponseDto> create(Mono<UserRequestDto> userDto) {
         return userDto
-                .map(UserRequestDto::withoutId)
-                .map(this::encodePassword)
-                .subscribeOn(Schedulers.boundedElastic())
-                .map(dto -> BaseMapper.map(dto, User.class))
+                .flatMap(this::throwErrorIfEmailExists)
+                .publishOn(Schedulers.boundedElastic())
+                .map(dto -> BaseMapper.map(encodePassword(dto).withoutId(), User.class))
                 .flatMap(userRepository::save)
                 .map(user -> BaseMapper.map(user, UserResponseDto.class));
     }
@@ -49,5 +49,10 @@ public class UserService {
 
     private String encodePassword(String password) {
         return Optional.ofNullable(password).map(passwordEncoder::encode).orElse(null);
+    }
+
+    private Mono<UserRequestDto> throwErrorIfEmailExists(UserRequestDto dto) {
+        return userRepository.existsByEmail(dto.getEmail()).filter(exists -> !exists).map(exists -> dto)
+                .switchIfEmpty(Mono.error(new UserWithSameEmailAlreadyExists(dto.getEmail())));
     }
 }

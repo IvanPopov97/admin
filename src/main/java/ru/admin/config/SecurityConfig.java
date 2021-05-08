@@ -1,6 +1,5 @@
 package ru.admin.config;
 
-import io.r2dbc.proxy.listener.ProxyExecutionListener;
 import org.passay.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -11,6 +10,8 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import ru.admin.config.properties.MinCountProperties;
+import ru.admin.config.properties.PasswordValidationProperties;
 import ru.admin.service.UserDetailsService;
 import ru.admin.utils.PasswordValidatorBuilder;
 
@@ -49,7 +50,7 @@ public class SecurityConfig {
     @Bean
     PasswordValidator passwordValidator() {
         PasswordValidationProperties properties = passwordValidationProperties();
-        MinCount minCount = properties.getMinCount();
+        MinCountProperties minCount = properties.getMinCount();
         int simpleSequenceLimit = properties.getSimpleSequenceLimit() + 1;
         return new PasswordValidatorBuilder()
                 .length(properties.getMinLength(), properties.getMaxLength())

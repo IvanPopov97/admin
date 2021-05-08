@@ -15,13 +15,13 @@
     {
       "name": "password.validation.min-count.uppercase",
       "type": "java.lang.Integer",
-      "description": "Минимальное количество символов в верхнем регистре в пароле.",
+      "description": "Минимальное количество символов верхнего регистра в пароле.",
       "defaultValue": 0
     },
     {
       "name": "password.validation.min-count.lowercase",
       "type": "java.lang.Integer",
-      "description": "Минимальное количество символов в нижнем регистре в пароле.",
+      "description": "Минимальное количество символов нижнего регистра в пароле.",
       "defaultValue": 0
     },
     {
@@ -41,5 +41,12 @@
       "type": "java.lang.Integer",
       "description": "Максимальная длина пароля.",
       "defaultValue": 50
+    },
+    {
+      "name": "blocking-call-detection.enable",
+      "type": "java.lang.Boolean",
+      "description": "Включить/выключить инструмент, который позволяет находить блокирующие вызовы, которых не должно быть в реактивном приложении.",
+      "defaultValue": false
     }
-  ] }
+  ]
+}
