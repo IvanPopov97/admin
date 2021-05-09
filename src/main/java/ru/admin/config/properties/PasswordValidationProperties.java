@@ -10,7 +10,7 @@ import javax.validation.constraints.Min;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "password.validation")
+@ConfigurationProperties(prefix = "password-validation")
 @Valid
 public class PasswordValidationProperties {
     @Min(value = 1)

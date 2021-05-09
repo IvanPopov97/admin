@@ -1,10 +1,8 @@
 server:
   port: 8080
 spring:
-  application:
-    name: development
-  datasource:
-    schema: public
+  application.name: development
+  datasource.schema: public
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/admin
     username: admin
@@ -14,21 +12,25 @@ spring:
     user: admin
     password: xPFe5CxBDtsqTYg
     change-log: db/changelog/changelog-master.xml
-  webflux:
-    base-path: /api
-springdoc:
-  swagger-ui:
-    path: /doc
-password:
-  validation:
-    min-length: 8
-    max-length: 50
-    min-count:
-      uppercase: 1
-      lowercase: 1
-      digit: 1
-      special: 0
-    simple-sequence-limit: 4
+  webflux.base-path: /api
+  mail:
+    host: smtp.gmail.com
+    username: in.the.middle.of.the.chaos@gmail.com
+    password: Nine!=362880
+    port: 587
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+springdoc.swagger-ui.path: /doc
+password-validation:
+  min-length: 8
+  max-length: 50
+  min-count:
+    uppercase: 1
+    lowercase: 1
+    digit: 1
+    special: 0
+  simple-sequence-limit: 4
 info:
   project.version: @project.version@
   java.version: @java.version@

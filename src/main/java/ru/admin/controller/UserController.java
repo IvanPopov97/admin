@@ -1,7 +1,6 @@
 package ru.admin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -18,7 +17,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
