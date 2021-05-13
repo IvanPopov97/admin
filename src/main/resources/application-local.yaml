@@ -8,5 +8,12 @@ management:
   endpoints.web.exposure.include: auditevents,beans,caches,conditions,configprops,env,flyway,health,heapdump,httptrace,info,logfile,loggers,metrics,mappings,shutdown,threaddump
 blocking-call-detection.enable: true
 logging.level:
+  org.springframework:
+    amqp: DEBUG
+    messaging: DEBUG
   web: DEBUG
   ru.admin.config: DEBUG
+springdoc:
+  swagger-ui.path: /doc
+  api-docs:
+    enabled: true

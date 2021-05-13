@@ -25,7 +25,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityWebFilterChain configure(ServerHttpSecurity http) {
+    SecurityWebFilterChain configure(ServerHttpSecurity http) {
         return http
                 .csrf().disable()
                 .authorizeExchange()

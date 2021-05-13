@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class BlockingCallDetectionConfig {
     @Bean
-    BlockingCallDetectionProperties blockingCallDetectionProperties () {
+    public BlockingCallDetectionProperties blockingCallDetectionProperties () {
         return new BlockingCallDetectionProperties();
     }
 
@@ -18,7 +18,8 @@ public class BlockingCallDetectionConfig {
     @PostConstruct
     public void installBlockHound() {
         if (blockingCallDetectionProperties().isEnable()) {
-            BlockHound.install();
+            // отключаем проверки для Swagger (Swagger в production лучше отключать)
+            BlockHound.builder().allowBlockingCallsInside("org.springframework.core.io.buffer.DataBufferUtils$ReadableByteChannelGenerator", "accept").install();
         }
     }
 }

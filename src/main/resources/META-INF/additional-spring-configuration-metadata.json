@@ -47,6 +47,24 @@
       "type": "java.lang.Boolean",
       "description": "Включить/выключить инструмент, который позволяет находить блокирующие вызовы, которых не должно быть в реактивном приложении.",
       "defaultValue": false
+    },
+    {
+      "name": "account-activation.email-template",
+      "type": "java.lang.String",
+      "description": "Шаблон письма с запросом на активацию аккаунта.",
+      "defaultValue": "account-activation.ftl"
+    },
+    {
+      "name": "account-activation.queue-name",
+      "type": "java.lang.String",
+      "description": "Название очереди запросов на активацию аккаунта.",
+      "defaultValue": "account-activation"
+    },
+    {
+      "name": "account-activation.confirmation-time",
+      "type": "java.time.Duration",
+      "description": "Сколько времени даётся пользователю на активацию аккаунта.",
+      "defaultValue": "15m"
     }
   ]
 }

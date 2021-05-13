@@ -143,7 +143,7 @@
         ------------------------------------- */
         .btn {
             box-sizing: border-box;
-            width: 100%;
+            width: 80%;
         }
 
         .btn > tbody > tr > td {

@@ -1,7 +1,9 @@
 package ru.admin.utils;
 
 import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebExchangeBindException;
+import org.springframework.web.server.ServerWebInputException;
 import ru.admin.dto.ErrorResponse;
 import ru.admin.dto.FieldError;
 import ru.admin.error.UserWithSameEmailAlreadyExists;
@@ -9,6 +11,7 @@ import ru.admin.error.UserWithSameEmailAlreadyExists;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ErrorResponseFactory {
@@ -40,5 +43,11 @@ public class ErrorResponseFactory {
         response.setParam(((PathImpl) constraintViolation.getPropertyPath()).getLeafNode().getName());
         response.setMessage(constraintViolation.getMessage());
         return response;
+    }
+
+    public static ErrorResponse from(ServerWebInputException exception) {
+        String param = Optional.ofNullable(exception.getMethodParameter()).map(MethodParameter::getParameterName).orElse("неизвестный параметр");
+        String message = Optional.ofNullable(exception.getReason()).map(String::toLowerCase).orElse("Что-то пошло не так");
+        return new ErrorResponse(param, message);
     }
 }

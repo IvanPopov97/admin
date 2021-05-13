@@ -21,3 +21,15 @@ services:
       - ./docker-volume/pgadmin:/var/lib/pgadmin
     ports:
       - 9000:80
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=in.the.middle.of.the.chaos@gmail.com
+      - RABBITMQ_DEFAULT_PASS=Nine!=362880
+    volumes:
+      - ./docker-volume/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+

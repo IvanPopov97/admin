@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-import ru.admin.dto.UserRequestDto;
+import ru.admin.dto.UserRegistrationDto;
 import ru.admin.dto.UserResponseDto;
 import ru.admin.service.UserService;
 import ru.admin.utils.ControllerUtils;
@@ -30,12 +30,12 @@ public class UserController {
     @GetMapping
     @Operation(summary = "Получить данные пользователя с указанной электронной почтой")
     private Mono<ResponseEntity<UserResponseDto>> getWithEmail(@RequestParam String email) {
-        return ControllerUtils.wrapByResponseEntity(userService.getWithEmail(email));
+        return ControllerUtils.wrapByResponseEntity(userService.getUserWithEmail(email));
     }
 
     @PostMapping
     @Operation(summary = "Добавить пользователя")
-    public Mono<UserResponseDto> create(@RequestBody @Valid Mono<UserRequestDto> user) {
+    public Mono<UserResponseDto> create(@RequestBody @Valid Mono<UserRegistrationDto> user) {
         return userService.create(user);
     }
 

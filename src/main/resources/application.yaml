@@ -21,7 +21,12 @@ spring:
     properties.mail.smtp:
       auth: true
       starttls.enable: true
-springdoc.swagger-ui.path: /doc
+  rabbitmq:
+    username: in.the.middle.of.the.chaos@gmail.com
+    password: Nine!=362880
+springdoc:
+  api-docs:
+    enabled: false
 password-validation:
   min-length: 8
   max-length: 50
@@ -31,8 +36,11 @@ password-validation:
     digit: 1
     special: 0
   simple-sequence-limit: 4
+account-activation:
+  email-template: account-activation.ftl
+  queue-name: account-activation
+  confirmation-time: 15m
 info:
   project.version: @project.version@
   java.version: @java.version@
   spring.framework.version: @spring-framework.version@
-
