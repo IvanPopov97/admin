@@ -1,4 +1,4 @@
-package ru.admin.controller;
+package ru.admin.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import javax.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 @Slf4j
-public class ErrorController {
+public class ErrorResolver {
     @ExceptionHandler(UserWithSameEmailAlreadyExists.class)
     @ResponseStatus(code = HttpStatus.CONFLICT)
     public ErrorResponse handleEmailExistsError(UserWithSameEmailAlreadyExists exception) {

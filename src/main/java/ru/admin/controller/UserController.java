@@ -33,10 +33,16 @@ public class UserController {
         return ControllerUtils.wrapByResponseEntity(userService.getUserWithEmail(email));
     }
 
-    @PostMapping
-    @Operation(summary = "Добавить пользователя")
-    public Mono<UserResponseDto> create(@RequestBody @Valid Mono<UserRegistrationDto> user) {
-        return userService.create(user);
+    @PostMapping("signup")
+    @Operation(summary = "Зарегистрировать пользователя")
+    public Mono<UserResponseDto> signUp(@RequestBody @Valid Mono<UserRegistrationDto> user) {
+        return userService.signUp(user);
+    }
+
+    @GetMapping("confirm")
+    @Operation(summary = "Подтвердить действие")
+    public void confirm(@RequestParam String code) {
+        System.out.println("Почта успешно подтверждена с помощью кода: " + code);
     }
 
 }

@@ -14,6 +14,7 @@ public class MessagingConfig {
         this.accountActivationProperties = accountActivationProperties;
     }
 
+    // очередь пользователей, которые ждут письмо для активации аккаунта
     @Bean
     public Queue accountActivationQueue() {
         return new Queue(accountActivationProperties.getQueueName());

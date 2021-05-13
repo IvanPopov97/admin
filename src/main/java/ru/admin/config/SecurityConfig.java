@@ -2,6 +2,7 @@ package ru.admin.config;
 
 import org.passay.*;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import ru.admin.config.properties.MinCountProperties;
 import ru.admin.config.properties.PasswordValidationProperties;
+import ru.admin.enitity.UserRole;
 import ru.admin.service.UserDetailsService;
 import ru.admin.utils.PasswordValidatorBuilder;
 
@@ -29,7 +31,8 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .pathMatchers("/users/confirm", "/users/signup", "/users/login", "/actuator/health").permitAll()
+                .pathMatchers("/doc/**", "/webjars/swagger-ui/**", "/v3/api-docs/**", "/actuator/**").hasRole(UserRole.ADMIN.name())
                 .anyExchange().authenticated()
                 .and()
                 .httpBasic()

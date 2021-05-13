@@ -17,3 +17,5 @@ springdoc:
   swagger-ui.path: /doc
   api-docs:
     enabled: true
+account-activation:
+  link: http://localhost:8080/api/users/confirm

@@ -16,9 +16,9 @@ public class BlockingCallDetectionConfig {
 
     @SuppressWarnings("unused")
     @PostConstruct
-    public void installBlockHound() {
+    public void installBlockHound() { // устанавливает инструмент для поиска "блокирующих" участков кода
         if (blockingCallDetectionProperties().isEnable()) {
-            // отключаем проверки для Swagger (Swagger в production лучше отключать)
+            // отключаем проверки для Swagger (Swagger в production лучше отключить)
             BlockHound.builder().allowBlockingCallsInside("org.springframework.core.io.buffer.DataBufferUtils$ReadableByteChannelGenerator", "accept").install();
         }
     }

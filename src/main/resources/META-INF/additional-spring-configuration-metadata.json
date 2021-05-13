@@ -65,6 +65,11 @@
       "type": "java.time.Duration",
       "description": "Сколько времени даётся пользователю на активацию аккаунта.",
       "defaultValue": "15m"
+    },
+    {
+      "name": "account-activation.activation-link",
+      "type": "java.lang.String",
+      "description": "Ссылка на активацию аккаунта."
     }
   ]
 }

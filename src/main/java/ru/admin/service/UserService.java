@@ -40,7 +40,7 @@ public class UserService {
         return userRepository.findByEmail(email).map(user -> BaseMapper.map(user, UserResponseDto.class));
     }
 
-    public Mono<UserResponseDto> create(Mono<UserRegistrationDto> userDto) {
+    public Mono<UserResponseDto> signUp(Mono<UserRegistrationDto> userDto) {
         return userDto
                 .flatMap(this::throwErrorIfEmailExists)
                 .publishOn(Schedulers.boundedElastic())

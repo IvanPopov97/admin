@@ -21,7 +21,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList(role.name() + "_ROLE");
+        return AuthorityUtils.createAuthorityList("ROLE_" + role.name());
     }
 
     @Override
