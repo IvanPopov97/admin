@@ -28,6 +28,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain configure(ServerHttpSecurity http) {
+        // @formatter:off
         return http
                 .csrf().disable()
                 .authorizeExchange()
@@ -38,6 +39,7 @@ public class SecurityConfig {
                 .httpBasic()
                 .and()
                 .build();
+        // @formatter:on
     }
 
     @Bean
@@ -55,6 +57,7 @@ public class SecurityConfig {
         PasswordValidationProperties properties = passwordValidationProperties();
         MinCountProperties minCount = properties.getMinCount();
         int simpleSequenceLimit = properties.getSimpleSequenceLimit() + 1;
+        // @formatter:off
         return new PasswordValidatorBuilder()
                 .length(properties.getMinLength(), properties.getMaxLength())
                 .characterRule(EnglishCharacterData.UpperCase, minCount.getUpperCase())
@@ -67,5 +70,6 @@ public class SecurityConfig {
                 .repeatCharacterRule(simpleSequenceLimit)
                 .whitespaceRule()
                 .build();
+        // @formatter:on
     }
 }

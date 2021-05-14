@@ -10,6 +10,7 @@ import ru.admin.config.properties.AccountActivationProperties;
 import ru.admin.dto.UserRegistrationDto;
 import ru.admin.dto.UserResponseDto;
 import ru.admin.enitity.User;
+import ru.admin.enitity.UserStatus;
 import ru.admin.error.UserWithSameEmailAlreadyExists;
 import ru.admin.repository.UserRepository;
 import ru.admin.utils.BaseMapper;
@@ -48,6 +49,14 @@ public class UserService {
                 .flatMap(userRepository::save)
                 .doOnNext(user -> messagingTemplate.convertAndSend(accountActivationProperties.getQueueName(), user))
                 .map(user -> BaseMapper.map(user, UserResponseDto.class));
+    }
+
+    public Mono<Void> activateUserAccount(long userId) {
+        return userRepository.findById(userId)
+                .filter(user -> user.getStatus() == UserStatus.NOT_ACTIVE)
+                .doOnNext(user -> user.setStatus(UserStatus.ACTIVE))
+                .flatMap(userRepository::save)
+                .then();
     }
 
     private UserRegistrationDto encodePassword(UserRegistrationDto userDto) {

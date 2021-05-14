@@ -9,6 +9,7 @@ import org.springframework.lang.Nullable;
 @SuppressWarnings("unused")
 @Slf4j
 public class SqlLogger implements ProxyExecutionListener {
+    // @formatter:off
     private final QueryExecutionInfoFormatter formatter = new QueryExecutionInfoFormatter()
             .newLine()
             .showQuery()
@@ -16,6 +17,7 @@ public class SqlLogger implements ProxyExecutionListener {
             .showBindings()
             .newLine()
             .showTime();
+    // @formatter:on
     @Override
     public void afterQuery(@Nullable QueryExecutionInfo execInfo) {
         if (execInfo == null)

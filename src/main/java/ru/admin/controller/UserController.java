@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.admin.dto.UserRegistrationDto;
 import ru.admin.dto.UserResponseDto;
+import ru.admin.service.ConfirmationTokenService;
 import ru.admin.service.UserService;
 import ru.admin.utils.ControllerUtils;
 
@@ -16,9 +17,11 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final ConfirmationTokenService tokenService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ConfirmationTokenService tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     @GetMapping("exists")
@@ -41,8 +44,10 @@ public class UserController {
 
     @GetMapping("confirm")
     @Operation(summary = "Подтвердить действие")
-    public void confirm(@RequestParam String code) {
-        System.out.println("Почта успешно подтверждена с помощью кода: " + code);
+    public Mono<ResponseEntity<Void>> confirm(@RequestParam String code) {
+        return ControllerUtils.wrapByResponseEntity(
+                tokenService.confirmToken(code).flatMap(token -> userService.activateUserAccount(token.getUserId()))
+        );
     }
 
 }

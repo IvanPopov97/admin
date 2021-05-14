@@ -2,10 +2,10 @@ package ru.admin.service;
 
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import ru.admin.config.properties.AccountActivationProperties;
 import ru.admin.enitity.ConfirmationToken;
 import ru.admin.enitity.User;
+import ru.admin.error.TokenExpired;
 import ru.admin.repository.ConfirmationTokenRepository;
 
 import java.time.LocalDateTime;
@@ -22,14 +22,28 @@ public class ConfirmationTokenService {
         this.accountActivationProperties = accountActivationProperties;
     }
 
-    public Mono<ConfirmationToken> createForUser(Mono<User> userEntity) {
-        return userEntity.publishOn(Schedulers.boundedElastic())
-                .map(user -> ConfirmationToken.builder()
-                        .code(UUID.randomUUID().toString())
-                        .createdAt(LocalDateTime.now())
-                        .expiresAt(LocalDateTime.now().plusSeconds(accountActivationProperties.getConfirmationTime().toSeconds()))
-                        .userId(user.getId())
-                        .build())
+    public Mono<ConfirmationToken> createForUser(User user) {
+        ConfirmationToken token = ConfirmationToken.builder()
+                .code(UUID.randomUUID().toString())
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusSeconds(accountActivationProperties.getConfirmationTime().toSeconds()))
+                .userId(user.getId())
+                .build();
+        return confirmationTokenRepository.save(token);
+    }
+
+    public Mono<ConfirmationToken> confirmToken(String code) {
+        return confirmationTokenRepository.findByCode(code)
+                .handle((token, sink) -> {
+                    LocalDateTime now = LocalDateTime.now();
+                    if (now.isBefore(token.getExpiresAt())) {
+                        token.setConfirmedAt(now);
+                        sink.next(token);
+                    }
+                    else
+                        sink.error(new TokenExpired(token));
+                })
+                .cast(ConfirmationToken.class)
                 .flatMap(confirmationTokenRepository::save);
     }
 }
