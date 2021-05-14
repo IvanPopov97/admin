@@ -31,7 +31,8 @@ public class UserEmailService {
     }
 
     public void sendAccountActivationEmail(User user, ConfirmationToken confirmationToken) {
-        Mono.just(confirmationToken).publishOn(Schedulers.boundedElastic()).handle((token, sink) -> {
+        // @formatter:off
+        Mono.just(confirmationToken).handle((token, sink) -> {
             try {
                 sink.next(createAccountActivationHtml(token.getCode()));
             }
@@ -45,17 +46,21 @@ public class UserEmailService {
                 emailService.sendHtml(user.getEmail(), "Регистрация", html);
             }
             catch (MessagingException e) {
-                log.error(String.format("Не удалось отправить пользователю %s сгенерированное для активации аккаунта сообщение: %s ", user.getEmail(), html), e);
+                log.error(String.format("Не удалось отправить пользователю %s сгенерированное для активации аккаунта сообщение: %s ",
+                        user.getEmail(), html), e);
             }
-        }).subscribe();
+        }).subscribeOn(Schedulers.boundedElastic()).subscribe();
+        // @formatter:on
     }
 
     private String createAccountActivationHtml(String code) throws IOException, TemplateException {
+        // @formatter:off
         return FreeMarkerTemplateUtils.processTemplateIntoString(
                 freemarkerConfigurer.getConfiguration().getTemplate(accountActivationProperties.getEmailTemplate()),
                 Map.of("activationLink", createAccountActivationLink(code),
                         "timeLimitInMinutes", accountActivationProperties.getConfirmationTime().toMinutes())
         );
+        // @formatter:on
     }
 
     private String createAccountActivationLink(String code) {

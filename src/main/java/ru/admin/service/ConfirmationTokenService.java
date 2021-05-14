@@ -26,24 +26,22 @@ public class ConfirmationTokenService {
         ConfirmationToken token = ConfirmationToken.builder()
                 .code(UUID.randomUUID().toString())
                 .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusSeconds(accountActivationProperties.getConfirmationTime().toSeconds()))
+                .expiresAt(LocalDateTime.now()
+                        .plusSeconds(accountActivationProperties.getConfirmationTime().toSeconds()))
                 .userId(user.getId())
                 .build();
         return confirmationTokenRepository.save(token);
     }
 
     public Mono<ConfirmationToken> confirmToken(String code) {
-        return confirmationTokenRepository.findByCode(code)
-                .handle((token, sink) -> {
-                    LocalDateTime now = LocalDateTime.now();
-                    if (now.isBefore(token.getExpiresAt())) {
-                        token.setConfirmedAt(now);
-                        sink.next(token);
-                    }
-                    else
-                        sink.error(new TokenExpired(token));
-                })
-                .cast(ConfirmationToken.class)
-                .flatMap(confirmationTokenRepository::save);
+        return confirmationTokenRepository.findByCode(code).handle((token, sink) -> {
+            LocalDateTime now = LocalDateTime.now();
+            if (now.isBefore(token.getExpiresAt())) {
+                token.setConfirmedAt(now);
+                sink.next(token);
+            }
+            else
+                sink.error(new TokenExpired(token));
+        }).cast(ConfirmationToken.class).flatMap(confirmationTokenRepository::save);
     }
 }

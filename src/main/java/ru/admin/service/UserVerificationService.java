@@ -25,10 +25,11 @@ public class UserVerificationService {
     @Async
     public void activateUserAccount(User userEntity) {
         Mono.just(userEntity)
-                .publishOn(Schedulers.boundedElastic())
                 .flatMap(confirmationTokenService::createForUser)
-                .doOnError(error -> log.error("Не получилось создать токен для активации аккаунта пользователя: " + userEntity.getEmail(), error))
+                .doOnError(error -> log.error("Не получилось создать токен для активации аккаунта пользователя: "
+                        + userEntity.getEmail(), error))
                 .doOnNext(token -> userEmailService.sendAccountActivationEmail(userEntity, token))
+                .subscribeOn(Schedulers.boundedElastic())
                 .subscribe();
     }
 }

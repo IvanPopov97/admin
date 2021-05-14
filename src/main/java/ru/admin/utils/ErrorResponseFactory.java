@@ -27,13 +27,13 @@ public class ErrorResponseFactory {
 
     public static ErrorResponse from(WebExchangeBindException exception) {
         ErrorResponse response = ErrorResponseFactory.defaultResponse();
+        // @formatter:off
         response.setFieldErrors(
-                exception
-                        .getFieldErrors()
-                        .stream()
+                exception.getFieldErrors().stream()
                         .map(error -> new FieldError(error.getField(), error.getDefaultMessage()))
                         .collect(Collectors.toList())
         );
+        // @formatter:on
         return response;
     }
 
@@ -46,8 +46,12 @@ public class ErrorResponseFactory {
     }
 
     public static ErrorResponse from(ServerWebInputException exception) {
-        String param = Optional.ofNullable(exception.getMethodParameter()).map(MethodParameter::getParameterName).orElse("неизвестный параметр");
-        String message = Optional.ofNullable(exception.getReason()).map(String::toLowerCase).orElse("Что-то пошло не так");
+        String param = Optional.ofNullable(exception.getMethodParameter())
+                .map(MethodParameter::getParameterName)
+                .orElse("неизвестный параметр");
+        String message = Optional.ofNullable(exception.getReason())
+                .map(String::toLowerCase)
+                .orElse("Что-то пошло не так");
         return new ErrorResponse(param, message);
     }
 }

@@ -42,8 +42,7 @@ public class UserService {
     }
 
     public Mono<UserResponseDto> signUp(Mono<UserRegistrationDto> userDto) {
-        return userDto
-                .flatMap(this::throwErrorIfEmailExists)
+        return userDto.flatMap(this::throwErrorIfEmailExists)
                 .publishOn(Schedulers.boundedElastic())
                 .map(dto -> BaseMapper.map(encodePassword(dto), User.class))
                 .flatMap(userRepository::save)
@@ -64,7 +63,11 @@ public class UserService {
     }
 
     private Mono<UserRegistrationDto> throwErrorIfEmailExists(UserRegistrationDto dto) {
-        return userRepository.existsByEmail(dto.getEmail()).filter(exists -> !exists).map(exists -> dto)
-                .switchIfEmpty(Mono.error(new UserWithSameEmailAlreadyExists(dto.getEmail())));
+        return userRepository.existsByEmail(dto.getEmail()).handle((exists, sink) -> {
+            if (exists)
+                sink.error(new UserWithSameEmailAlreadyExists(dto.getEmail()));
+            else
+                sink.next(dto);
+        });
     }
 }

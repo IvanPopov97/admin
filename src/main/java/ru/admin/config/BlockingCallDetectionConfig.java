@@ -21,8 +21,9 @@ public class BlockingCallDetectionConfig {
         if (blockingCallDetectionProperties().isEnable()) {
             ReactorDebugAgent.init();
             // отключаем проверки для Swagger (Swagger в production лучше отключить)
-            BlockHound.install();
-            BlockHound.builder().allowBlockingCallsInside("org.springframework.core.io.buffer.DataBufferUtils", "readByteChannel").install();
+            BlockHound.builder()
+                    .allowBlockingCallsInside("org.springframework.core.io.buffer.DataBufferUtils", "readByteChannel")
+                    .install();
         }
     }
 }
