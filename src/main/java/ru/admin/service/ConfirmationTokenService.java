@@ -38,7 +38,7 @@ public class ConfirmationTokenService {
     public Mono<ConfirmationToken> confirmToken(String code) {
         return confirmationTokenRepository.findByCode(code).handle((token, sink) -> {
             LocalDateTime now = LocalDateTime.now();
-            if (now.isBefore(token.getExpiresAt()) && token.getConfirmedAt() != null) {
+            if (now.isBefore(token.getExpiresAt()) && token.getConfirmedAt() == null) {
                 token.setConfirmedAt(now);
                 sink.next(token);
             }

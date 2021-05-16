@@ -10,15 +10,17 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "password-validation")
+@ConfigurationProperties(prefix = "password")
 @Valid
-public class PasswordValidationProperties {
+public class PasswordProperties {
     @Min(value = 1)
     private int minLength;
     @Min(value = 2)
     private int maxLength;
     @NotNull
     private MinCountProperties minCount;
+    @NotNull
+    private PasswordGenerationProperties generation;
     @Min(value = 0)
     private int simpleSequenceLimit;
 }

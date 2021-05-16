@@ -15,9 +15,4 @@ public class UserAuthorizationDto {
     @Password
     @NotBlank(message = "не должно быть пустым")
     private String password;
-
-    public UserAuthorizationDto withPassword(String password) {
-        this.password = password;
-        return this;
-    }
 }

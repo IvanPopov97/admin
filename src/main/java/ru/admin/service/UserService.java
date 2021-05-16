@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import ru.admin.config.PasswordGeneratorTemplate;
 import ru.admin.config.properties.AccountActivationProperties;
+import ru.admin.config.properties.PasswordProperties;
 import ru.admin.dto.UserAuthorizationDto;
 import ru.admin.dto.UserRegistrationDto;
 import ru.admin.dto.UserResponseDto;
@@ -19,21 +21,28 @@ import ru.admin.repository.UserRepository;
 import ru.admin.utils.BaseMapper;
 
 import javax.validation.constraints.Email;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @Validated
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordGeneratorTemplate passwordGeneratorTemplate;
     private final AmqpTemplate messagingTemplate;
     private final AccountActivationProperties accountActivationProperties;
+    private final PasswordProperties passwordProperties;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AmqpTemplate messagingTemplate,
-            AccountActivationProperties accountActivationProperties) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            PasswordGeneratorTemplate passwordGeneratorTemplate, AmqpTemplate messagingTemplate,
+            AccountActivationProperties accountActivationProperties,
+            PasswordProperties passwordProperties) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.passwordGeneratorTemplate = passwordGeneratorTemplate;
         this.messagingTemplate = messagingTemplate;
         this.accountActivationProperties = accountActivationProperties;
+        this.passwordProperties = passwordProperties;
     }
 
     public Mono<Boolean> existsByEmail(@Email String email) {
@@ -45,11 +54,25 @@ public class UserService {
     }
 
     public Mono<UserResponseDto> signUp(Mono<UserRegistrationDto> userDto) {
+        AtomicReference<String> generatedPassword = new AtomicReference<>();
+
         return userDto.flatMap(this::throwErrorIfEmailExists)
                 .publishOn(Schedulers.boundedElastic())
+                .doOnNext(dto -> {
+                    if (dto.getPassword() == null) {
+                        dto.setPassword(passwordGeneratorTemplate.generatePassword());
+                        generatedPassword.set(dto.getPassword());
+                    }
+                })
                 .map(dto -> BaseMapper.map(encodePassword(dto), User.class))
                 .flatMap(userRepository::save)
-                .doOnNext(user -> messagingTemplate.convertAndSend(accountActivationProperties.getQueueName(), user))
+                .doOnNext(user -> {
+                    messagingTemplate.convertAndSend(accountActivationProperties.getQueueName(), user);
+                    user.setPassword(generatedPassword.get());
+                    if (user.getPassword() != null) {
+                        messagingTemplate.convertAndSend(passwordProperties.getGeneration().getQueueName(), user);
+                    }
+                })
                 .map(user -> BaseMapper.map(user, UserResponseDto.class));
     }
 
@@ -78,8 +101,8 @@ public class UserService {
                 .then();
     }
 
-    private UserRegistrationDto encodePassword(UserRegistrationDto userDto) {
-        return (UserRegistrationDto) userDto.withPassword(passwordEncoder.encode(userDto.getPassword()));
+    private UserRegistrationDto encodePassword(UserRegistrationDto dto) {
+        return dto.withPassword(passwordEncoder.encode(dto.getPassword()));
     }
 
     private Mono<UserRegistrationDto> throwErrorIfEmailExists(UserRegistrationDto dto) {

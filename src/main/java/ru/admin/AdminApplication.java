@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import ru.admin.config.properties.AccountActivationProperties;
 import ru.admin.config.properties.BlockingCallDetectionProperties;
-import ru.admin.config.properties.PasswordValidationProperties;
+import ru.admin.config.properties.PasswordProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({PasswordValidationProperties.class, BlockingCallDetectionProperties.class,
+@EnableConfigurationProperties({PasswordProperties.class, BlockingCallDetectionProperties.class,
 		AccountActivationProperties.class})
 public class AdminApplication {
 

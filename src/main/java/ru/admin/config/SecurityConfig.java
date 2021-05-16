@@ -11,10 +11,11 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import ru.admin.config.properties.MinCountProperties;
-import ru.admin.config.properties.PasswordValidationProperties;
+import ru.admin.config.properties.PasswordGenerationProperties;
+import ru.admin.config.properties.PasswordProperties;
 import ru.admin.enitity.UserRole;
 import ru.admin.service.UserDetailsService;
-import ru.admin.utils.PasswordValidatorBuilder;
+import ru.admin.utils.PasswordToolBuilder;
 
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
@@ -47,17 +48,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    PasswordValidationProperties passwordValidationProperties () {
-        return new PasswordValidationProperties();
+    PasswordProperties passwordProperties () {
+        return new PasswordProperties();
     }
 
     @Bean
-    PasswordValidator passwordValidator() {
-        PasswordValidationProperties properties = passwordValidationProperties();
+    PasswordToolBuilder passwordToolBuilder() {
+        PasswordProperties properties = passwordProperties();
         MinCountProperties minCount = properties.getMinCount();
         int simpleSequenceLimit = properties.getSimpleSequenceLimit() + 1;
         // @formatter:off
-        return new PasswordValidatorBuilder()
+        return new PasswordToolBuilder()
                 .length(properties.getMinLength(), properties.getMaxLength())
                 .characterRule(EnglishCharacterData.UpperCase, minCount.getUpperCase())
                 .characterRule(EnglishCharacterData.LowerCase, minCount.getLowerCase())
@@ -67,8 +68,18 @@ public class SecurityConfig {
                 .sequenceRule(EnglishSequenceData.Numerical, simpleSequenceLimit)
                 .sequenceRule(EnglishSequenceData.USQwerty, simpleSequenceLimit)
                 .repeatCharacterRule(simpleSequenceLimit)
-                .whitespaceRule()
-                .build();
+                .whitespaceRule();
         // @formatter:on
+    }
+
+    @Bean
+    PasswordValidator passwordValidator() {
+        return passwordToolBuilder().buildValidator();
+    }
+
+    @Bean
+    PasswordGeneratorTemplate passwordGeneratorTemplate() {
+        PasswordGenerationProperties generation = passwordProperties().getGeneration();
+        return passwordToolBuilder().buildGenerator(generation.getMinLength(), generation.getMaxLength());
     }
 }

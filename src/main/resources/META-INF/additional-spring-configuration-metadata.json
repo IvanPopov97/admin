@@ -1,46 +1,64 @@
 {
   "properties": [
     {
-      "name": "password-validation.simple-sequence-limit",
+      "name": "password.simple-sequence-limit",
       "type": "java.lang.Integer",
       "description": "Максимальная допустимая длина простых последовательностей в пароле таких как 012345, abc, qwerty и 11111.",
       "defaultValue": 0
     },
     {
-      "name": "password-validation.min-count.special",
+      "name": "password.min-count.special",
       "type": "java.lang.Integer",
       "description": "Минимальное количество специальных символов в пароле.",
       "defaultValue": 0
     },
     {
-      "name": "password-validation.min-count.uppercase",
+      "name": "password.min-count.uppercase",
       "type": "java.lang.Integer",
       "description": "Минимальное количество символов верхнего регистра в пароле.",
       "defaultValue": 0
     },
     {
-      "name": "password-validation.min-count.lowercase",
+      "name": "password.min-count.lowercase",
       "type": "java.lang.Integer",
       "description": "Минимальное количество символов нижнего регистра в пароле.",
       "defaultValue": 0
     },
     {
-      "name": "password-validation.min-count.digit",
+      "name": "password.min-count.digit",
       "type": "java.lang.Integer",
       "description": "Минимальное количество цифр в пароле.",
       "defaultValue": 0
     },
     {
-      "name": "password-validation.min-length",
+      "name": "password.min-length",
       "type": "java.lang.Integer",
       "description": "Минимальная длина пароля.",
       "defaultValue": 8
     },
     {
-      "name": "password-validation.max-length",
+      "name": "password.max-length",
       "type": "java.lang.Integer",
       "description": "Максимальная длина пароля.",
       "defaultValue": 50
+    },
+    {
+      "name": "password.generation.min-length",
+      "type": "java.lang.Integer",
+      "description": "Минимальная длина сгенерированного пароля.",
+      "defaultValue": 8
+    },
+    {
+      "name": "password.generation.max-length",
+      "type": "java.lang.Integer",
+      "description": "Максимальная длина сгенерированного пароля.",
+      "defaultValue": 16
+    },
+    {
+      "name": "password.generation.queue-name",
+      "type": "java.lang.String",
+      "description": "Название очереди сгенерированных паролей, которые необходимо отправить пользователю.",
+      "defaultValue": "password-generation"
     },
     {
       "name": "blocking-call-detection.enable",
@@ -70,6 +88,12 @@
       "name": "account-activation.activation-link",
       "type": "java.lang.String",
       "description": "Ссылка на активацию аккаунта."
+    },
+    {
+      "name": "password.generation.email-template",
+      "type": "java.lang.String",
+      "description": "Шаблон письма со сгенерированным паролем.",
+      "defaultValue": "password.ftl"
     }
   ]
 }

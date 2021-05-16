@@ -28,9 +28,14 @@ spring:
 springdoc:
   api-docs:
     enabled: false
-password-validation:
+password:
   min-length: 8
   max-length: 50
+  generation:
+    email-template: password.ftl
+    min-length: 10
+    max-length: 15
+    queue-name: password-generation
   min-count:
     uppercase: 1
     lowercase: 1
