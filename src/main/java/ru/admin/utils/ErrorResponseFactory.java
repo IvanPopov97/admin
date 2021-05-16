@@ -15,18 +15,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ErrorResponseFactory {
+
     public static ErrorResponse defaultResponse() {
+        return new ErrorResponse("что-то пошло не так");
+    }
+
+    public static ErrorResponse bodyError() {
         return new ErrorResponse("body", "не все поля прошли проверку");
     }
 
     public static ErrorResponse from(UserWithSameEmailAlreadyExists exception) {
-        ErrorResponse response = ErrorResponseFactory.defaultResponse();
+        ErrorResponse response = ErrorResponseFactory.bodyError();
         response.setFieldErrors(List.of(new FieldError("email", exception.getMessage())));
         return response;
     }
 
     public static ErrorResponse from(WebExchangeBindException exception) {
-        ErrorResponse response = ErrorResponseFactory.defaultResponse();
+        ErrorResponse response = ErrorResponseFactory.bodyError();
         // @formatter:off
         response.setFieldErrors(
                 exception.getFieldErrors().stream()

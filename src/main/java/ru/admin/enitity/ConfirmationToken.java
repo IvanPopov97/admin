@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Data
-public class ConfirmationToken { // TODO: Добавить Enum UserAction (ACTIVATE_ACCOUNT, CHANGE_PASSWORD)
+public class ConfirmationToken {
     @Id
     private Long id;
     private String code;
@@ -24,4 +24,5 @@ public class ConfirmationToken { // TODO: Добавить Enum UserAction (ACTI
     private LocalDateTime expiresAt;
     private LocalDateTime confirmedAt;
     private Long userId;
+    private UserAction action;
 }

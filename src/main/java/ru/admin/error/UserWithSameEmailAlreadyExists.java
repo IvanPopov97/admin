@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserWithSameEmailAlreadyExists extends RuntimeException {
+public class UserWithSameEmailAlreadyExists extends BusinessLogicError {
     private String message = "пользователь с такой почтой уже существует";
     private String email;
 

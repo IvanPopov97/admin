@@ -46,7 +46,7 @@ public class UserController {
     @Operation(summary = "Подтвердить действие")
     public Mono<ResponseEntity<Void>> confirm(@RequestParam String code) {
         return ControllerUtils.wrapByResponseEntity(
-                tokenService.confirmToken(code).flatMap(token -> userService.activateUserAccount(token.getUserId()))
+                tokenService.confirmToken(code).flatMap(userService::execute)
         );
     }
 

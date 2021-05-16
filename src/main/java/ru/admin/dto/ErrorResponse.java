@@ -14,6 +14,10 @@ public class ErrorResponse {
     private String message;
     private List<FieldError> fieldErrors;
 
+    public ErrorResponse(String message) {
+        this.message = message;
+    }
+
     public ErrorResponse(String param, String message) {
         this.param = param;
         this.message = message;

@@ -7,11 +7,14 @@ import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import ru.admin.config.properties.AccountActivationProperties;
+import ru.admin.dto.UserAuthorizationDto;
 import ru.admin.dto.UserRegistrationDto;
 import ru.admin.dto.UserResponseDto;
+import ru.admin.enitity.ConfirmationToken;
 import ru.admin.enitity.User;
 import ru.admin.enitity.UserStatus;
 import ru.admin.error.UserWithSameEmailAlreadyExists;
+import ru.admin.error.WrongAuthorizationData;
 import ru.admin.repository.UserRepository;
 import ru.admin.utils.BaseMapper;
 
@@ -50,6 +53,23 @@ public class UserService {
                 .map(user -> BaseMapper.map(user, UserResponseDto.class));
     }
 
+    public Mono<UserResponseDto> login(Mono<UserAuthorizationDto> userDto) {
+        return userDto.publishOn(Schedulers.boundedElastic())
+                .flatMap(dto -> userRepository.findByEmail(dto.getEmail()).handle((user, sink) -> {
+                    if (user.getPassword().equals(passwordEncoder.encode(dto.getPassword())))
+                        sink.next(BaseMapper.map(user, UserResponseDto.class));
+                    else
+                        sink.error(new WrongAuthorizationData(user));
+                }))
+                .cast(UserResponseDto.class)
+                .switchIfEmpty(Mono.error(new WrongAuthorizationData()));
+    }
+
+    // TODO: сделать switch по token.action (точно ли надо возвращать void?)
+    public Mono<Void> execute(ConfirmationToken token) {
+        return activateUserAccount(token.getUserId());
+    }
+
     public Mono<Void> activateUserAccount(long userId) {
         return userRepository.findById(userId)
                 .filter(user -> user.getStatus() == UserStatus.NOT_ACTIVE)
@@ -59,7 +79,7 @@ public class UserService {
     }
 
     private UserRegistrationDto encodePassword(UserRegistrationDto userDto) {
-        return userDto.withPassword(passwordEncoder.encode(userDto.getPassword()));
+        return (UserRegistrationDto) userDto.withPassword(passwordEncoder.encode(userDto.getPassword()));
     }
 
     private Mono<UserRegistrationDto> throwErrorIfEmailExists(UserRegistrationDto dto) {

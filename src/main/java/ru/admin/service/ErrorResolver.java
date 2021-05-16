@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ServerWebInputException;
 import ru.admin.dto.ErrorResponse;
+import ru.admin.error.BusinessLogicError;
 import ru.admin.error.UserWithSameEmailAlreadyExists;
+import ru.admin.error.WrongAuthorizationData;
 import ru.admin.utils.BaseMapper;
 import ru.admin.utils.ErrorResponseFactory;
 
@@ -22,6 +24,20 @@ public class ErrorResolver {
     public ErrorResponse handleEmailExistsError(UserWithSameEmailAlreadyExists exception) {
         log.error("Попытка добавить пользователя с уже занятой почтой", exception);
         return ErrorResponseFactory.from(exception);
+    }
+
+    @ExceptionHandler(BusinessLogicError.class)
+    @ResponseStatus(code = HttpStatus.CONFLICT)
+    public ErrorResponse handleBusinessLogicError(BusinessLogicError exception) {
+        log.error("Произошла ошибка, связанная с бизнес-логикой", exception);
+        return BaseMapper.map(exception, ErrorResponse.class);
+    }
+
+    @ExceptionHandler(WrongAuthorizationData.class)
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleAuthorizationError(WrongAuthorizationData exception) {
+        log.error("Неправильный " + (exception.getUser() == null ? "логин" : "пароль"), exception);
+        return BaseMapper.map(exception, ErrorResponse.class);
     }
 
     @ExceptionHandler(WebExchangeBindException.class)
@@ -48,7 +64,7 @@ public class ErrorResolver {
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleError(Exception exception) {
-        log.error("Неизвестная ошибка", exception);
-        return BaseMapper.map(exception, ErrorResponse.class);
+        log.error("Ошибка", exception);
+        return ErrorResponseFactory.defaultResponse();
     }
 }

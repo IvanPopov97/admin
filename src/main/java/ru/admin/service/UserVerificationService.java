@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import ru.admin.enitity.User;
-
+import ru.admin.enitity.UserAction;
 
 @Service
 @Slf4j
@@ -25,7 +25,7 @@ public class UserVerificationService {
     @Async
     public void activateUserAccount(User userEntity) {
         Mono.just(userEntity)
-                .flatMap(confirmationTokenService::createForUser)
+                .flatMap(user -> confirmationTokenService.createForUser(user, UserAction.ACTIVATE_ACCOUNT))
                 .doOnError(error -> log.error("Не получилось создать токен для активации аккаунта пользователя: "
                         + userEntity.getEmail(), error))
                 .doOnNext(token -> userEmailService.sendAccountActivationEmail(userEntity, token))

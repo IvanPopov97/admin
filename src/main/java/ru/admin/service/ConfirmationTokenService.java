@@ -5,6 +5,7 @@ import reactor.core.publisher.Mono;
 import ru.admin.config.properties.AccountActivationProperties;
 import ru.admin.enitity.ConfirmationToken;
 import ru.admin.enitity.User;
+import ru.admin.enitity.UserAction;
 import ru.admin.error.TokenExpired;
 import ru.admin.repository.ConfirmationTokenRepository;
 
@@ -22,13 +23,14 @@ public class ConfirmationTokenService {
         this.accountActivationProperties = accountActivationProperties;
     }
 
-    public Mono<ConfirmationToken> createForUser(User user) {
+    public Mono<ConfirmationToken> createForUser(User user, UserAction action) {
         ConfirmationToken token = ConfirmationToken.builder()
                 .code(UUID.randomUUID().toString())
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now()
                         .plusSeconds(accountActivationProperties.getConfirmationTime().toSeconds()))
                 .userId(user.getId())
+                .action(action)
                 .build();
         return confirmationTokenRepository.save(token);
     }
@@ -36,7 +38,7 @@ public class ConfirmationTokenService {
     public Mono<ConfirmationToken> confirmToken(String code) {
         return confirmationTokenRepository.findByCode(code).handle((token, sink) -> {
             LocalDateTime now = LocalDateTime.now();
-            if (now.isBefore(token.getExpiresAt())) {
+            if (now.isBefore(token.getExpiresAt()) && token.getConfirmedAt() != null) {
                 token.setConfirmedAt(now);
                 sink.next(token);
             }
