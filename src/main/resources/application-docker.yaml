@@ -1,0 +1,17 @@
+spring:
+  datasource.schema: public
+  r2dbc:
+    url: r2dbc:proxy:postgresql://postgres:5432/admin?proxyListener=ru.admin.config.SqlLogger
+  liquibase:
+    url: jdbc:postgresql://postgres:5432/admin
+  rabbitmq:
+    host: rabbitmq
+management:
+  endpoints.web.exposure.include: beans,caches,configprops,env,health,httptrace,info,logfile,loggers,mappings,threaddump
+blocking-call-detection.enable: false
+springdoc:
+  swagger-ui.path: /doc
+  api-docs:
+    enabled: true
+account-activation:
+  link: http://localhost:8080/api/users/confirm

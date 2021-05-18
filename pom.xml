@@ -20,6 +20,7 @@
 		<r2dbc.proxy.version>0.8.5.RELEASE</r2dbc.proxy.version>
 		<blockhound.version>1.0.6.RELEASE</blockhound.version>
 		<reactor-tools-version>3.4.6</reactor-tools-version>
+		<jna-version>5.8.0</jna-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -133,6 +134,12 @@
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-tools</artifactId>
 			<version>${reactor-tools-version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>${jna-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
