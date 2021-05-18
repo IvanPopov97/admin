@@ -6,6 +6,6 @@
 4) использовать скрипт local-development для запуска
 
 ### Как containerize приложение:
-Выполнить Maven команду: mvnw spring-boot:build-image.
+Выполнить Maven команду: mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=casket/admin.
 Далее пушим образ в docker hub и делаем pull на сервере.
 Это можно автоматизировать с помощью CI/CD.
