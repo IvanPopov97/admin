@@ -59,8 +59,8 @@ public class UserEmailService {
                         sink.next(createHtmlWithPassword(user.getPassword()));
                     }
                     catch (IOException | TemplateException e) {
-                        String message = String.format("Не удалось сгенерировать сообщение с паролем %s для пользователя %s", user
-                                .getPassword(), user.getEmail());
+                        String message = String.format("Не удалось сгенерировать сообщение с паролем для пользователя %s", user
+                                .getEmail());
                         log.error(message, e);
                         sink.complete();
                     }
