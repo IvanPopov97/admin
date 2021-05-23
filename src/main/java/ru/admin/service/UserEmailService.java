@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.reactive.result.view.freemarker.FreeMarkerConfigurer;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import ru.admin.config.properties.AccountActivationProperties;
 import ru.admin.config.properties.PasswordProperties;
 import ru.admin.enitity.ConfirmationToken;
@@ -15,7 +13,6 @@ import ru.admin.enitity.User;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.Map;
-import java.util.function.Consumer;
 
 @Service
 @Slf4j
@@ -34,54 +31,37 @@ public class UserEmailService {
         this.passwordProperties = passwordProperties;
     }
 
-    public void sendAccountActivationEmail(User user, ConfirmationToken confirmationToken) {
-        Mono.just(confirmationToken)
-                .handle((token, sink) -> {
-                    try {
-                        sink.next(createAccountActivationHtml(token.getCode()));
-                    }
-                    catch (IOException | TemplateException e) {
-                        log.error("Не удалось сгенерировать сообщение для активации аккаунта для пользователя "
-                                + user.getEmail(), e);
-                        sink.complete();
-                    }
-                })
-                .cast(String.class)
-                .doOnNext(sendHtml(user, "Регистрация"))
-                .subscribeOn(Schedulers.boundedElastic())
-                .subscribe();
+    public void sendAccountActivationEmail(User user, ConfirmationToken token) {
+        try {
+            String html = createAccountActivationHtml(token.getCode());
+            sendHtml(html, user, "Регистрация");
+        }
+        catch (IOException | TemplateException e) {
+            String message = "Не удалось сгенерировать сообщение для активации аккаунта для пользователя " + user.getEmail();
+            log.error(message, e);
+        }
     }
 
-    public void sendEmailWithPassword(User userEntity) {
-        Mono.just(userEntity)
-                .handle((user, sink) -> {
-                    try {
-                        sink.next(createHtmlWithPassword(user.getPassword()));
-                    }
-                    catch (IOException | TemplateException e) {
-                        String message = String.format("Не удалось сгенерировать сообщение с паролем для пользователя %s", user
-                                .getEmail());
-                        log.error(message, e);
-                        sink.complete();
-                    }
-                })
-                .cast(String.class)
-                .doOnNext(sendHtml(userEntity, "Пароль"))
-                .subscribeOn(Schedulers.boundedElastic())
-                .subscribe();
+    public void sendEmailWithPassword(User user) {
+        try {
+            String html = createHtmlWithPassword(user.getPassword());
+            sendHtml(html, user, "Пароль");
+        }
+        catch (IOException | TemplateException e) {
+            String message = "Не удалось сгенерировать сообщение с паролем для пользователя" + user.getEmail();
+            log.error(message, e);
+        }
     }
 
-    private Consumer<String> sendHtml(User user, String subject) {
-        return html -> {
-            try {
-                emailService.sendHtml(user.getEmail(), subject, html);
-            }
-            catch (MessagingException e) {
-                String message = String.format("Не удалось отправить пользователю %s сгенерированное сообщение (%s): %s ", user
-                        .getEmail(), subject, html);
-                log.error(message, e);
-            }
-        };
+    private void sendHtml(String html, User user, String subject) {
+        try {
+            emailService.sendHtml(user.getEmail(), subject, html);
+        }
+        catch (MessagingException e) {
+            String message = String.format("Не удалось отправить пользователю %s сгенерированное сообщение (%s): %s ", user
+                    .getEmail(), subject, html);
+            log.error(message, e);
+        }
     }
 
     private String createAccountActivationHtml(String code) throws IOException, TemplateException {

@@ -25,6 +25,8 @@ spring:
   rabbitmq:
     username: in.the.middle.of.the.chaos@gmail.com
     password: Nine!=362880
+  freemarker:
+    suffix: .ftl
 springdoc:
   api-docs:
     enabled: false

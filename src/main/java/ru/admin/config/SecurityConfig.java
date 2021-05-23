@@ -32,11 +32,13 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/users/confirm", "/users/signup", "/users/login", "/actuator/health").permitAll()
-                .pathMatchers("/doc/**", "/webjars/swagger-ui/**", "/v3/api-docs/**", "/actuator/**").hasRole(UserRole.ADMIN.name())
+                .pathMatchers("/users/confirm", "/login", "/logout", "/users/signup", "/actuator/health").permitAll()
+                .pathMatchers("/doc/**", "/webjars/swagger-ui/**", "/v3/api-docs/**", "/actuator/**", "/users/**").hasRole(UserRole.ADMIN.name())
                 .anyExchange().authenticated()
                 .and()
                 .httpBasic()
+                .and()
+                .formLogin().loginPage("/login")
                 .and()
                 .build();
         // @formatter:on

@@ -24,15 +24,16 @@ public class ConfirmationTokenService {
     }
 
     public Mono<ConfirmationToken> createForUser(User user, UserAction action) {
-        ConfirmationToken token = ConfirmationToken.builder()
-                .code(UUID.randomUUID().toString())
-                .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now()
-                        .plusSeconds(accountActivationProperties.getConfirmationTime().toSeconds()))
-                .userId(user.getId())
-                .action(action)
-                .build();
-        return confirmationTokenRepository.save(token);
+        return Mono.just(user.getId()).map(userId -> {
+            LocalDateTime now = LocalDateTime.now();
+            return ConfirmationToken.builder()
+                    .code(UUID.randomUUID().toString())
+                    .createdAt(now)
+                    .expiresAt(now.plusSeconds(accountActivationProperties.getConfirmationTime().toSeconds()))
+                    .userId(user.getId())
+                    .action(action)
+                    .build();
+        }).flatMap(confirmationTokenRepository::save).retry(2);
     }
 
     public Mono<ConfirmationToken> confirmToken(String code) {

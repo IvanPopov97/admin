@@ -1,6 +1,7 @@
 package ru.admin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("users")
+@Tag(name = "пользователь", description = "API пользователей")
 public class UserController {
 
     private final UserService userService;
@@ -38,13 +40,13 @@ public class UserController {
 
     @PostMapping("signup")
     @Operation(summary = "Зарегистрировать пользователя")
-    public Mono<UserResponseDto> signUp(@RequestBody @Valid Mono<UserRegistrationDto> user) {
+    private Mono<UserResponseDto> signUp(@RequestBody @Valid Mono<UserRegistrationDto> user) {
         return userService.signUp(user);
     }
 
     @GetMapping("confirm")
     @Operation(summary = "Подтвердить действие")
-    public Mono<ResponseEntity<Void>> confirm(@RequestParam String code) {
+    private Mono<ResponseEntity<Void>> confirm(@RequestParam String code) {
         return ControllerUtils.wrapByResponseEntity(
                 tokenService.confirmToken(code).flatMap(userService::execute)
         );

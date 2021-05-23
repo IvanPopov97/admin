@@ -66,6 +66,11 @@
 			<artifactId>springdoc-openapi-webflux-ui</artifactId>
 			<version>${springdoc.version}</version>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springdoc</groupId>-->
+<!--			<artifactId>springdoc-openapi-data-rest</artifactId>-->
+<!--			<version>${springdoc.version}</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
@@ -136,6 +141,7 @@
 			<version>${reactor-tools-version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->
+		<!-- Это нужно для корректной работы reactor-tools в контейнере -->
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>

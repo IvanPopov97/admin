@@ -9,14 +9,12 @@ import reactor.core.scheduler.Schedulers;
 import ru.admin.config.PasswordGeneratorTemplate;
 import ru.admin.config.properties.AccountActivationProperties;
 import ru.admin.config.properties.PasswordProperties;
-import ru.admin.dto.UserAuthorizationDto;
 import ru.admin.dto.UserRegistrationDto;
 import ru.admin.dto.UserResponseDto;
 import ru.admin.enitity.ConfirmationToken;
 import ru.admin.enitity.User;
 import ru.admin.enitity.UserStatus;
 import ru.admin.error.UserWithSameEmailAlreadyExists;
-import ru.admin.error.WrongAuthorizationData;
 import ru.admin.repository.UserRepository;
 import ru.admin.utils.BaseMapper;
 
@@ -63,29 +61,18 @@ public class UserService {
                         dto.setPassword(passwordGeneratorTemplate.generatePassword());
                         generatedPassword.set(dto.getPassword());
                     }
+                    dto.setPassword(passwordEncoder.encode(dto.getPassword()));
                 })
-                .map(dto -> BaseMapper.map(encodePassword(dto), User.class))
+                .map(dto -> BaseMapper.map(dto, User.class))
                 .flatMap(userRepository::save)
                 .doOnNext(user -> {
-                    messagingTemplate.convertAndSend(accountActivationProperties.getQueueName(), user);
                     user.setPassword(generatedPassword.get());
+                    messagingTemplate.convertAndSend(accountActivationProperties.getQueueName(), user);
                     if (user.getPassword() != null) {
                         messagingTemplate.convertAndSend(passwordProperties.getGeneration().getQueueName(), user);
                     }
                 })
                 .map(user -> BaseMapper.map(user, UserResponseDto.class));
-    }
-
-    public Mono<UserResponseDto> login(Mono<UserAuthorizationDto> userDto) {
-        return userDto.publishOn(Schedulers.boundedElastic())
-                .flatMap(dto -> userRepository.findByEmail(dto.getEmail()).handle((user, sink) -> {
-                    if (user.getPassword().equals(passwordEncoder.encode(dto.getPassword())))
-                        sink.next(BaseMapper.map(user, UserResponseDto.class));
-                    else
-                        sink.error(new WrongAuthorizationData(user));
-                }))
-                .cast(UserResponseDto.class)
-                .switchIfEmpty(Mono.error(new WrongAuthorizationData()));
     }
 
     // TODO: сделать switch по token.action (точно ли надо возвращать void?)
@@ -99,10 +86,6 @@ public class UserService {
                 .doOnNext(user -> user.setStatus(UserStatus.ACTIVE))
                 .flatMap(userRepository::save)
                 .then();
-    }
-
-    private UserRegistrationDto encodePassword(UserRegistrationDto dto) {
-        return dto.withPassword(passwordEncoder.encode(dto.getPassword()));
     }
 
     private Mono<UserRegistrationDto> throwErrorIfEmailExists(UserRegistrationDto dto) {

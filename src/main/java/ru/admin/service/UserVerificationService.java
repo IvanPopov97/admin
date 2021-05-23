@@ -5,7 +5,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import ru.admin.enitity.User;
 import ru.admin.enitity.UserAction;
 
@@ -29,7 +28,6 @@ public class UserVerificationService {
                 .doOnError(error -> log.error("Не получилось создать токен для активации аккаунта пользователя: "
                         + userEntity.getEmail(), error))
                 .doOnNext(token -> userEmailService.sendAccountActivationEmail(userEntity, token))
-                .subscribeOn(Schedulers.boundedElastic())
                 .subscribe();
     }
 }
