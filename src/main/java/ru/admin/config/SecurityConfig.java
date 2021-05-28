@@ -32,8 +32,8 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/users/confirm", "/login", "/logout", "/users/signup", "/actuator/health").permitAll()
-                .pathMatchers("/doc/**", "/webjars/swagger-ui/**", "/v3/api-docs/**", "/actuator/**", "/users/**").hasRole(UserRole.ADMIN.name())
+                .pathMatchers("/user/confirm", "/login", "/logout", "/user/signup", "/actuator/health").permitAll()
+                .pathMatchers("/doc/**", "/webjars/swagger-ui/**", "/v3/api-docs/**", "/actuator/**", "/admin/**").hasRole(UserRole.ADMIN.name())
                 .anyExchange().authenticated()
                 .and()
                 .httpBasic()

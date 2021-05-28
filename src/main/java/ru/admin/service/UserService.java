@@ -3,7 +3,6 @@ package ru.admin.service;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import ru.admin.config.PasswordGeneratorTemplate;
@@ -18,11 +17,9 @@ import ru.admin.error.UserWithSameEmailAlreadyExists;
 import ru.admin.repository.UserRepository;
 import ru.admin.utils.BaseMapper;
 
-import javax.validation.constraints.Email;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
-@Validated
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -41,14 +38,6 @@ public class UserService {
         this.messagingTemplate = messagingTemplate;
         this.accountActivationProperties = accountActivationProperties;
         this.passwordProperties = passwordProperties;
-    }
-
-    public Mono<Boolean> existsByEmail(@Email String email) {
-        return userRepository.existsByEmail(email);
-    }
-
-    public Mono<UserResponseDto> getUserWithEmail(@Email String email) {
-        return userRepository.findByEmail(email).map(user -> BaseMapper.map(user, UserResponseDto.class));
     }
 
     public Mono<UserResponseDto> signUp(Mono<UserRegistrationDto> userDto) {
