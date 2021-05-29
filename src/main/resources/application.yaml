@@ -29,6 +29,9 @@ spring:
   rabbitmq:
     username: in.the.middle.of.the.chaos@gmail.com
     password: Nine!=362880
+#  freemarker:
+#    expose-request-attributes: true
+#    expose-session-attributes: true
 springdoc:
   api-docs:
     enabled: false
