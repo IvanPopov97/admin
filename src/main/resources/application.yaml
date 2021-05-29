@@ -29,8 +29,6 @@ spring:
   rabbitmq:
     username: in.the.middle.of.the.chaos@gmail.com
     password: Nine!=362880
-  freemarker:
-    suffix: .ftl
 springdoc:
   api-docs:
     enabled: false
@@ -38,7 +36,7 @@ password:
   min-length: 8
   max-length: 50
   generation:
-    email-template: password.ftl
+    email-template: password.ftlh
     min-length: 10
     max-length: 15
     queue-name: password-generation
@@ -49,7 +47,7 @@ password:
     special: 0
   simple-sequence-limit: 4
 account-activation:
-  email-template: account-activation.ftl
+  email-template: account-activation.ftlh
   queue-name: account-activation
   confirmation-time: 15m
 info:

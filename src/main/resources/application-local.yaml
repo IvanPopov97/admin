@@ -18,4 +18,4 @@ springdoc:
     enabled: true
   show-actuator: false
 account-activation:
-  link: http://localhost:8080/api/users/confirm
+  link: http://localhost:8080/api/user/confirm
