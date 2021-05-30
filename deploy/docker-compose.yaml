@@ -11,18 +11,8 @@ services:
       - ./docker-volume/db:/var/lib/postgresql/data
     ports:
       - 5432:5432
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=golden.royal@mail.ru
-      - PGADMIN_DEFAULT_PASSWORD=pp2RU34SGZbENaa
-    volumes:
-      - ./docker-volume/pgadmin:/var/lib/pgadmin
-    ports:
-      - 9000:80
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3
     container_name: rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=in.the.middle.of.the.chaos@gmail.com

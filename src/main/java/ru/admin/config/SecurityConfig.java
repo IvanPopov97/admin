@@ -38,6 +38,9 @@ public class SecurityConfig {
     SecurityWebFilterChain configure(ServerHttpSecurity http) {
         // @formatter:off
         return http
+                //.csrf().csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
+                //.and()
+                //.addFilterAt(new CookieCsrfFilter(), SecurityWebFiltersOrder.REACTOR_CONTEXT)
                 .csrf().disable()
                 .authorizeExchange()
                 .pathMatchers("/user/confirm", "/login", "/logout", "/user/signup", "/actuator/health").permitAll()

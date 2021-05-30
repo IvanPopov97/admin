@@ -1,0 +1,25 @@
+spring:
+  datasource.schema: public
+  r2dbc:
+    url: r2dbc:proxy:postgresql://46.8.158.224:5432/admin?proxyListener=ru.admin.config.SqlLogger
+  liquibase:
+    url: jdbc:postgresql://46.8.158.224:5432/admin
+  rabbitmq:
+    host: 46.8.158.224
+management:
+  endpoint.health.show-details: always
+  endpoints.web.exposure.include: auditevents,beans,caches,conditions,configprops,env,flyway,health,heapdump,httptrace,info,logfile,loggers,metrics,mappings,shutdown,threaddump
+blocking-call-detection.enable: true
+logging.level:
+  org.springframework:
+    amqp: DEBUG
+    messaging: DEBUG
+  web: DEBUG
+  ru.admin.config: DEBUG
+springdoc:
+  swagger-ui.path: /doc
+  api-docs:
+    enabled: true
+  show-actuator: false
+account-activation:
+  link: http://46.8.158.224:8080/api/user/confirm

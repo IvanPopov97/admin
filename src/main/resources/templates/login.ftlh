@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="_csrf" type="org.springframework.security.web.csrf.CsrfToken" -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -21,7 +22,7 @@
             <label for="password" class="sr-only">Пароль</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Пароль" required>
         </p>
-<#--        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+<#--        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
         <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
     </form>
 </div>
