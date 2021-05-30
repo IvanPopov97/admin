@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class UserRegistrationDto {
-    @Schema(description = "Адрес электронной почты пользователя")
+    @Schema(description = "Email пользователя")
     @Email(message = "не похоже на реальный адрес электронной почты")
     @NotBlank(message = "не должно быть пустым")
     private String email;
