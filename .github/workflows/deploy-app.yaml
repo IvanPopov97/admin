@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Обновить docker image приложения
+name: Обновить docker image приложения, а затем запустить его на сервере
 
 on:
   push:
@@ -30,3 +30,11 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     - name: Запушить образ в DockerHub
       run: docker push casket/admin:latest
+    - name: Обновить приложение на сервере
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.HOST_USER }}
+        password: ${{ secrets.HOST_PASSWORD }}
+        port: ${{ secrets.HOST_PORT }}
+        script: docker-compose pull && docker-compose up -d
