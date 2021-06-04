@@ -12,7 +12,4 @@
 ### Как контейнеризовать приложение:
 1) создаём образ: mvn spring-boot:build-image -Dspring-boot.build-image.imageName=casket/admin -Dmaven.test.skip=true
 2) пушим в заранее созданный приватный репозиторий: docker push casket/admin:latest
-
-### CI/CD:
-1) сейчас надо вручную менять docker-compose файл на сервере и выполнять команду docker-compose pull && docker-compose up -d
-2) в будущем эти шаги будут автоматизированы
+3) для работы приложения нужны postgres и rabbitmq, существуют официальные докер-образы с ними

@@ -12,7 +12,7 @@ services:
     ports:
       - 5432:5432
   rabbitmq:
-    image: rabbitmq:3
+    image: rabbitmq
     container_name: rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=in.the.middle.of.the.chaos@gmail.com
@@ -32,4 +32,12 @@ services:
     depends_on:
       - postgres
       - rabbitmq
-
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - app
