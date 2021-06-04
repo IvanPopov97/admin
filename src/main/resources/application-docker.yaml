@@ -1,7 +1,7 @@
 server:
   port: 8443
   ssl:
-    key-store: /etc/letsencrypt/live/fsociety-org.ru/certificate.p12
+    key-store: classpath:/ssl/certificate.p12
     key-store-password: 31165119221
     key-store-type: PKCS12
     key-alias: cert
