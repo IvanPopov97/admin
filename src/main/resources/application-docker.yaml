@@ -20,4 +20,4 @@ springdoc:
   api-docs:
     enabled: true
 account-activation:
-  link: http://localhost:8080/api/users/confirm
+  link: https://fsociety-org.ru/api/users/confirm
