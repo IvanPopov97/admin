@@ -17,4 +17,8 @@ public class UserRegistrationDto {
     @Schema(description = "Пароль пользователя")
     @Password
     private String password;
+
+    public void setEmail(String email) {
+        this.email = email.toLowerCase();
+    }
 }

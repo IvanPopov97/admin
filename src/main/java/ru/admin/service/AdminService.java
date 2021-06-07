@@ -8,6 +8,7 @@ import ru.admin.repository.UserRepository;
 import ru.admin.utils.BaseMapper;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Service
 @Validated
@@ -18,11 +19,11 @@ public class AdminService {
         this.userRepository = userRepository;
     }
 
-    public Mono<Boolean> existsByEmail(@Email String email) {
-        return userRepository.existsByEmail(email);
+    public Mono<Boolean> existsByEmail(@NotBlank @Email String email) {
+        return userRepository.existsByEmail(email.toLowerCase());
     }
 
-    public Mono<UserResponseDto> getUserWithEmail(@Email String email) {
-        return userRepository.findByEmail(email).map(user -> BaseMapper.map(user, UserResponseDto.class));
+    public Mono<UserResponseDto> getUserWithEmail(@NotBlank @Email String email) {
+        return userRepository.findByEmail(email.toLowerCase()).map(user -> BaseMapper.map(user, UserResponseDto.class));
     }
 }
