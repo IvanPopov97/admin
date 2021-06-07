@@ -12,6 +12,7 @@
 </head>
 <body>
 <div class="container">
+    <#--noinspection HtmlUnknownTarget-->
     <form class="form-signin" method="post" action="/api/login">
         <h2 class="form-signin-heading">Пожалуйста, авторизуйтесь</h2>
         <p>
@@ -22,7 +23,7 @@
             <label for="password" class="sr-only">Пароль</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Пароль" required>
         </p>
-<#--        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
     </form>
 </div>
