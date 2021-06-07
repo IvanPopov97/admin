@@ -37,4 +37,4 @@ jobs:
         username: ${{ secrets.HOST_USER }}
         password: ${{ secrets.HOST_PASSWORD }}
         port: ${{ secrets.HOST_PORT }}
-        script: docker-compose pull && docker-compose up -d && docker image prune -a --filter "until=7200h"
+        script: docker-compose pull && docker-compose up -d && docker image prune -a --filter "until=7200h" --force
