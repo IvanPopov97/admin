@@ -13,7 +13,7 @@ spring:
   rabbitmq:
     host: rabbitmq
 management:
-  endpoints.web.exposure.include: beans,caches,configprops,env,health,httptrace,info,logfile,loggers,mappings,threaddump
+  endpoints.web.exposure.include: health,info
 springdoc:
   swagger-ui.path: /doc
   api-docs:

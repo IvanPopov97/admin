@@ -11,7 +11,7 @@ public class UserRequestDto {
     @NotNull
     private Long id;
 
-    @Email(message = "не похоже на реальный адрес электронной почты")
-    @NotBlank(message = "не должно быть пустым")
+    @Email
+    @NotBlank
     private String email;
 }

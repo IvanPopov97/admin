@@ -52,6 +52,7 @@ password:
   simple-sequence-limit: 4
 app-ui:
   url: http://localhost:8081
+  language: ru
 account-activation:
   email-template: account-activation.ftlh
   queue-name: account-activation

@@ -99,6 +99,12 @@
       "name": "app-ui.url",
       "type": "java.lang.String",
       "description": "Домен пользовательского интерфейса."
+    },
+    {
+      "name": "app-ui.language",
+      "type": "java.lang.String",
+      "description": "Язык пользовательского интерфейса.",
+      "defaultValue": "ru"
     }
   ]
 }

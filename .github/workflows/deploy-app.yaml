@@ -22,7 +22,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Создать docker image, используя maven
-      run: mvn spring-boot:build-image -Dspring-boot.build-image.imageName=casket/admin -Dmaven.test.skip=true -Duser.language=ru -Duser.region=RU
+      run: mvn spring-boot:build-image -Dspring-boot.build-image.imageName=casket/admin -Dmaven.test.skip=true
     - name: Авторизация в DockerHub
       uses: docker/login-action@v1
       with:

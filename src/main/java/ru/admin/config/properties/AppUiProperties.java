@@ -12,4 +12,6 @@ import javax.validation.constraints.NotBlank;
 public class AppUiProperties {
     @NotBlank
     private String url;
+    @NotBlank
+    private String language;
 }

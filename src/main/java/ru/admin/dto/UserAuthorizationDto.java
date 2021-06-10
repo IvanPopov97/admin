@@ -10,12 +10,12 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class UserAuthorizationDto {
     @Schema(description = "Адрес электронной почты пользователя")
-    @Email(message = "не похоже на реальный адрес электронной почты")
-    @NotBlank(message = "не должно быть пустым")
+    @Email
+    @NotBlank
     private String email;
 
     @Schema(description = "Пароль пользователя")
     @Password
-    @NotBlank(message = "не должно быть пустым")
+    @NotBlank
     private String password;
 }
