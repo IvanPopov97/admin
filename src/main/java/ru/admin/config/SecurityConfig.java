@@ -1,6 +1,8 @@
 package ru.admin.config;
 
-import org.passay.*;
+import org.passay.EnglishCharacterData;
+import org.passay.EnglishSequenceData;
+import org.passay.PasswordValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -38,11 +40,9 @@ public class SecurityConfig {
     SecurityWebFilterChain configure(ServerHttpSecurity http) {
         // @formatter:off
         return http
-                //.csrf().csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
-                //.and()
-                //.addFilterAt(new CookieCsrfFilter(), SecurityWebFiltersOrder.REACTOR_CONTEXT)
+                .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/user/confirm", "/login", "/logout", "/user/signup", "/actuator/health").permitAll()
+                .pathMatchers("/user/confirm", "/login", "/logout", "/user", "/actuator/health").permitAll()
                 .pathMatchers("/doc/**", "/webjars/swagger-ui/**", "/v3/api-docs/**", "/actuator/**", "/admin/**").hasRole(UserRole.ADMIN.name())
                 .anyExchange().authenticated()
                 .and()

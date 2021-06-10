@@ -32,6 +32,10 @@ spring:
 springdoc:
   api-docs:
     enabled: false
+info:
+  project.version: @project.version@
+  java.version: @java.version@
+  spring.framework.version: @spring-framework.version@
 password:
   min-length: 8
   max-length: 50
@@ -46,11 +50,9 @@ password:
     digit: 1
     special: 0
   simple-sequence-limit: 4
+app-ui:
+  url: http://localhost:8081
 account-activation:
   email-template: account-activation.ftlh
   queue-name: account-activation
   confirmation-time: 15m
-info:
-  project.version: @project.version@
-  java.version: @java.version@
-  spring.framework.version: @spring-framework.version@

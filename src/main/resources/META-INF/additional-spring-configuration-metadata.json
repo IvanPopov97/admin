@@ -85,7 +85,7 @@
       "defaultValue": "15m"
     },
     {
-      "name": "account-activation.activation-link",
+      "name": "account-activation.link",
       "type": "java.lang.String",
       "description": "Ссылка на активацию аккаунта."
     },
@@ -94,6 +94,11 @@
       "type": "java.lang.String",
       "description": "Шаблон письма со сгенерированным паролем.",
       "defaultValue": "password.ftl"
+    },
+    {
+      "name": "app-ui.url",
+      "type": "java.lang.String",
+      "description": "Домен пользовательского интерфейса."
     }
   ]
 }

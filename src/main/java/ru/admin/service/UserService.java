@@ -1,5 +1,6 @@
 package ru.admin.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class UserService {
         return userDto.flatMap(this::throwErrorIfEmailExists)
                 .publishOn(Schedulers.boundedElastic())
                 .doOnNext(dto -> {
-                    if (dto.getPassword() == null) {
+                    if (StringUtils.isBlank(dto.getPassword())) {
                         dto.setPassword(passwordGeneratorTemplate.generatePassword());
                         generatedPassword.set(dto.getPassword());
                     }

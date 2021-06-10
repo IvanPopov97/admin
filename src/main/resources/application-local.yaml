@@ -5,7 +5,6 @@ spring:
 management:
   endpoint.health.show-details: always
   endpoints.web.exposure.include: auditevents,beans,caches,conditions,configprops,env,flyway,health,heapdump,httptrace,info,logfile,loggers,metrics,mappings,shutdown,threaddump
-blocking-call-detection.enable: true
 logging.level:
   org.springframework:
     amqp: DEBUG
@@ -17,5 +16,6 @@ springdoc:
   api-docs:
     enabled: true
   show-actuator: false
+blocking-call-detection.enable: true
 account-activation:
   link: http://localhost:8080/api/user/confirm

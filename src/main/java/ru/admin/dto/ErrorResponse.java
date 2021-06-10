@@ -12,7 +12,7 @@ import java.util.List;
 public class ErrorResponse {
     private String param;
     private String message;
-    private List<FieldError> fieldErrors;
+    private List<FieldError> errors;
 
     public ErrorResponse(String message) {
         this.message = message;

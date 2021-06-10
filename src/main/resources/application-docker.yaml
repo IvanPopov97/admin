@@ -14,10 +14,10 @@ spring:
     host: rabbitmq
 management:
   endpoints.web.exposure.include: beans,caches,configprops,env,health,httptrace,info,logfile,loggers,mappings,threaddump
-blocking-call-detection.enable: false
 springdoc:
   swagger-ui.path: /doc
   api-docs:
     enabled: true
+blocking-call-detection.enable: false
 account-activation:
   link: https://fsociety-org.ru/api/user/confirm

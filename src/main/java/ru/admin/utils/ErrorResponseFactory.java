@@ -26,14 +26,14 @@ public class ErrorResponseFactory {
 
     public static ErrorResponse from(UserWithSameEmailAlreadyExists exception) {
         ErrorResponse response = ErrorResponseFactory.bodyError();
-        response.setFieldErrors(List.of(new FieldError("email", exception.getMessage())));
+        response.setErrors(List.of(new FieldError("email", exception.getMessage())));
         return response;
     }
 
     public static ErrorResponse from(WebExchangeBindException exception) {
         ErrorResponse response = ErrorResponseFactory.bodyError();
         // @formatter:off
-        response.setFieldErrors(
+        response.setErrors(
                 exception.getFieldErrors().stream()
                         .map(error -> new FieldError(error.getField(), error.getDefaultMessage()))
                         .collect(Collectors.toList())

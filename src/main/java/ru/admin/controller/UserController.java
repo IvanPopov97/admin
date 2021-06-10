@@ -16,6 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("user")
 @Tag(name = "пользователь", description = "API пользователей")
+@CrossOrigin("${app-ui.url}")
 public class UserController {
 
     private final UserService userService;
@@ -26,7 +27,7 @@ public class UserController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("signup")
+    @PostMapping
     @Operation(summary = "Зарегистрировать пользователя")
     private Mono<UserResponseDto> signUp(@RequestBody @Valid Mono<UserRegistrationDto> user) {
         return userService.signUp(user);

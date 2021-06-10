@@ -1,15 +1,14 @@
 spring:
-  datasource.schema: public
+  datasource.schema: public # схема БД по умолчанию
   r2dbc:
-    url: r2dbc:proxy:postgresql://46.8.158.224:5432/admin?proxyListener=ru.admin.config.SqlLogger
+    url: r2dbc:proxy:postgresql://fsociety-org.ru:5432/admin?proxyListener=ru.admin.config.SqlLogger
   liquibase:
-    url: jdbc:postgresql://46.8.158.224:5432/admin
+    url: jdbc:postgresql://fsociety-org.ru:5432/admin
   rabbitmq:
-    host: 46.8.158.224
+    host: fsociety-org.ru
 management:
   endpoint.health.show-details: always
   endpoints.web.exposure.include: auditevents,beans,caches,conditions,configprops,env,flyway,health,heapdump,httptrace,info,logfile,loggers,metrics,mappings,shutdown,threaddump
-blocking-call-detection.enable: true
 logging.level:
   org.springframework:
     amqp: DEBUG
@@ -21,5 +20,6 @@ springdoc:
   api-docs:
     enabled: true
   show-actuator: false
+blocking-call-detection.enable: true
 account-activation:
-  link: https://46.8.158.224:8080/api/user/confirm
+  link: https://fsociety-org.ru/api/user/confirm
