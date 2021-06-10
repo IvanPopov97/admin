@@ -9,7 +9,7 @@ import javax.validation.constraints.Min;
 @Getter
 @Setter
 @Valid
-public class MinCountProperties {
+public class PasswordCharacterMinCountProperties {
     @Min(value = 0)
     private int upperCase;
     @Min(value = 0)

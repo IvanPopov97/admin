@@ -18,7 +18,7 @@ public class PasswordProperties {
     @Min(value = 2)
     private int maxLength;
     @NotNull
-    private MinCountProperties minCount;
+    private PasswordCharacterMinCountProperties minCount;
     @NotNull
     private PasswordGenerationProperties generation;
     @Min(value = 0)

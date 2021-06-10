@@ -65,13 +65,6 @@ public class UserService {
                 .map(user -> BaseMapper.map(user, UserResponseDto.class));
     }
 
-    public Mono<Void> sendActivationLink(long userId) {
-        return userRepository.findById(userId).doOnNext(user -> {
-            user.setPassword(null);
-            messagingTemplate.convertAndSend(accountActivationProperties.getQueueName(), user);
-        }).then();
-    }
-
     // TODO: сделать switch по token.action (точно ли надо возвращать void?)
     public Mono<Void> execute(ConfirmationToken token) {
         return activateUserAccount(token.getUserId());

@@ -33,17 +33,9 @@ public class UserController {
         return userService.signUp(user);
     }
 
-    @GetMapping("activation/{userId}")
-    @Operation(summary = "Отправить пользователю ссылку для активации аккаунта")
-    private Mono<Void> activation(@PathVariable long userId) {
-        return userService.sendActivationLink(userId);
-    }
-
     @GetMapping("confirm")
     @Operation(summary = "Подтвердить действие")
     private Mono<ResponseEntity<Void>> confirm(@RequestParam String code) {
-        return ControllerUtils.wrapByResponseEntity(
-                tokenService.confirmToken(code).flatMap(userService::execute)
-        );
+        return ControllerUtils.wrapByResponseEntity(tokenService.confirmToken(code).flatMap(userService::execute));
     }
 }
