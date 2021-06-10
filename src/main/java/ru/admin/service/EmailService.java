@@ -18,7 +18,7 @@ public class EmailService {
 
     public void sendHtml(String to, String subject, String html) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+        var helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(html, true);

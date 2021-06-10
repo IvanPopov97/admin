@@ -18,8 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.WebFilterExchange;
 import reactor.core.publisher.Mono;
-import ru.admin.config.properties.MinCountProperties;
-import ru.admin.config.properties.PasswordGenerationProperties;
 import ru.admin.config.properties.PasswordProperties;
 import ru.admin.enitity.UserRole;
 import ru.admin.service.UserDetailsService;
@@ -68,8 +66,8 @@ public class SecurityConfig {
 
     @Bean
     PasswordToolBuilder passwordToolBuilder() {
-        PasswordProperties properties = passwordProperties();
-        MinCountProperties minCount = properties.getMinCount();
+        var properties = passwordProperties();
+        var minCount = properties.getMinCount();
         int simpleSequenceLimit = properties.getSimpleSequenceLimit() + 1;
         // @formatter:off
         return new PasswordToolBuilder()
@@ -93,7 +91,7 @@ public class SecurityConfig {
 
     @Bean
     PasswordGeneratorTemplate passwordGeneratorTemplate() {
-        PasswordGenerationProperties generation = passwordProperties().getGeneration();
+        var generation = passwordProperties().getGeneration();
         return passwordToolBuilder().buildGenerator(generation.getMinLength(), generation.getMaxLength());
     }
 

@@ -43,8 +43,8 @@ public class ErrorResponseFactory {
     }
 
     public static ErrorResponse from(ConstraintViolationException exception) {
-        ConstraintViolation<?> constraintViolation = (ConstraintViolation<?>) exception.getConstraintViolations().toArray()[0];
-        ErrorResponse response = new ErrorResponse();
+        var constraintViolation = (ConstraintViolation<?>) exception.getConstraintViolations().toArray()[0];
+        var response = new ErrorResponse();
         response.setParam(((PathImpl) constraintViolation.getPropertyPath()).getLeafNode().getName());
         response.setMessage(constraintViolation.getMessage());
         return response;
