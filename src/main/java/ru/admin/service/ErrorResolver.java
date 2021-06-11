@@ -9,6 +9,7 @@ import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ServerWebInputException;
 import ru.admin.dto.ErrorResponse;
 import ru.admin.error.BusinessLogicError;
+import ru.admin.error.InvalidConfirmationToken;
 import ru.admin.error.UserWithSameEmailAlreadyExists;
 import ru.admin.error.WrongAuthorizationData;
 import ru.admin.utils.BaseMapper;
@@ -24,6 +25,14 @@ public class ErrorResolver {
     public ErrorResponse handleEmailExistsError(UserWithSameEmailAlreadyExists exception) {
         log.error("Попытка добавить пользователя с уже занятой почтой", exception);
         return ErrorResponseFactory.from(exception);
+    }
+
+    @ExceptionHandler(InvalidConfirmationToken.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleInvalidConfirmationTokenError(InvalidConfirmationToken exception) {
+        log.error(String.format("Пользователь не смог подтвердить действие с помощью токена %s по причине: %s", exception
+                .getConfirmationToken(), exception.getReason()), exception);
+        return BaseMapper.map(exception, ErrorResponse.class);
     }
 
     @ExceptionHandler(BusinessLogicError.class)

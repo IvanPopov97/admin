@@ -33,7 +33,7 @@ public class UserEmailService {
 
     public void sendAccountActivationEmail(User user, ConfirmationToken token) {
         try {
-            String html = createAccountActivationHtml(token.getCode());
+            String html = createAccountActivationHtml(token);
             sendHtml(html, user, "Регистрация");
         }
         catch (IOException | TemplateException e) {
@@ -64,11 +64,11 @@ public class UserEmailService {
         }
     }
 
-    private String createAccountActivationHtml(String code) throws IOException, TemplateException {
+    private String createAccountActivationHtml(ConfirmationToken token) throws IOException, TemplateException {
         // @formatter:off
         return FreeMarkerTemplateUtils.processTemplateIntoString(
                 freemarkerConfigurer.getConfiguration().getTemplate(accountActivationProperties.getEmailTemplate()),
-                Map.of("activationLink", createAccountActivationLink(code),
+                Map.of("activationLink", createAccountActivationLink(token),
                         "timeLimitInMinutes", accountActivationProperties.getConfirmationTime().toMinutes())
         );
         // @formatter:on
@@ -83,7 +83,10 @@ public class UserEmailService {
         // @formatter:on
     }
 
-    private String createAccountActivationLink(String code) {
-        return String.format("%s?code=%s", accountActivationProperties.getLink(), code);
+    private String createAccountActivationLink(ConfirmationToken token) {
+        // @formatter:off
+        return String.format("%s?id=%d&code=%s&action=%s", accountActivationProperties.getLink(), token.getId(),
+                token.getCode(), token.getAction().toString());
+        // @formatter:on
     }
 }

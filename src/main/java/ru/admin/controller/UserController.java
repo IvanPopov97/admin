@@ -2,14 +2,12 @@ package ru.admin.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import ru.admin.dto.UserRegistrationDto;
 import ru.admin.dto.UserResponseDto;
 import ru.admin.service.ConfirmationTokenService;
 import ru.admin.service.UserService;
-import ru.admin.utils.ControllerUtils;
 
 import javax.validation.Valid;
 
@@ -35,7 +33,8 @@ public class UserController {
 
     @GetMapping("confirm")
     @Operation(summary = "Подтвердить действие")
-    private Mono<ResponseEntity<Void>> confirm(@RequestParam String code) {
-        return ControllerUtils.wrapByResponseEntity(tokenService.confirmToken(code).flatMap(userService::execute));
+    private Mono<Void> confirm(@RequestParam long id, @RequestParam String code,
+            @RequestParam String action) {
+        return tokenService.confirmToken(id, code, action).flatMap(userService::execute);
     }
 }

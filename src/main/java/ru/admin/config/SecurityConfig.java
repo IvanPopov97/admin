@@ -48,6 +48,10 @@ public class SecurityConfig {
                 .authenticationSuccessHandler(this::onAuthenticationSuccess)
                 .authenticationFailureHandler(this::onAuthenticationError)
                 .and()
+                .headers()
+                .frameOptions()
+                .disable()
+                .and()
                 .build();
         // @formatter:on
     }
