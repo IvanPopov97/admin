@@ -31,8 +31,7 @@ public class UserService {
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
             PasswordGeneratorTemplate passwordGeneratorTemplate, AmqpTemplate messagingTemplate,
-            AccountActivationProperties accountActivationProperties,
-            PasswordProperties passwordProperties) {
+            AccountActivationProperties accountActivationProperties, PasswordProperties passwordProperties) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.passwordGeneratorTemplate = passwordGeneratorTemplate;
@@ -44,25 +43,21 @@ public class UserService {
     public Mono<UserResponseDto> signUp(Mono<UserRegistrationDto> userDto) {
         AtomicReference<String> generatedPassword = new AtomicReference<>();
 
-        return userDto.flatMap(this::throwErrorIfEmailExists)
-                .publishOn(Schedulers.boundedElastic())
-                .doOnNext(dto -> {
-                    if (StringUtils.isBlank(dto.getPassword())) {
+        return userDto.flatMap(this::throwErrorIfEmailExists) // вернуть ошибку, если email занят
+                .publishOn(Schedulers.boundedElastic()).doOnNext(dto -> {
+                    if (StringUtils.isBlank(dto.getPassword())) { // если пароля нет, сгенерировать
                         dto.setPassword(passwordGeneratorTemplate.generatePassword());
                         generatedPassword.set(dto.getPassword());
                     }
                     dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-                })
-                .map(dto -> BaseMapper.map(dto, User.class))
-                .flatMap(userRepository::save)
-                .doOnNext(user -> {
-                    user.setPassword(generatedPassword.get());
+                }).map(dto -> BaseMapper.map(dto, User.class)).flatMap(userRepository::save).doOnNext(user -> {
+                    user.setPassword(null);
                     messagingTemplate.convertAndSend(accountActivationProperties.getQueueName(), user);
+                    user.setPassword(generatedPassword.get());
                     if (user.getPassword() != null) {
                         messagingTemplate.convertAndSend(passwordProperties.getGeneration().getQueueName(), user);
                     }
-                })
-                .map(user -> BaseMapper.map(user, UserResponseDto.class));
+                }).map(user -> BaseMapper.map(user, UserResponseDto.class));
     }
 
     // TODO: сделать switch по token.action (точно ли надо возвращать void?)

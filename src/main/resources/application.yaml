@@ -8,10 +8,10 @@ spring:
     url: r2dbc:postgresql://localhost:5432/admin
     username: admin
     password: xPFe5CxBDtsqTYg
-    pool:
-      enabled: true
-      max-idle-time: 1m
-      max-size: 15
+  #    pool:
+  #      enabled: true
+  #      max-idle-time: 1m
+  #      max-size: 15
   liquibase:
     url: jdbc:postgresql://localhost:5432/admin
     user: admin
